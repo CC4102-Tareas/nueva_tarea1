@@ -1,7 +1,7 @@
 /**
     Realiza la división de un nodo en dos en tiempo cuadratico.
 */
-Dos_nodos quadratic_split(Nodo nodo, Rectangulo rect)
+Dos_nodos quadratic_split(Nodo nodo, MBR mbr)
 {
 	int i, j;           // iteradores
     float area_max = 0; // almacena el incremento de área máximo.
@@ -14,7 +14,7 @@ Dos_nodos quadratic_split(Nodo nodo, Rectangulo rect)
 		for(j=i+1;j<(2*T+1);j++) {
             // el rectangulo en la posición 2*T es rect. Caso especial.
             if (j == 2*T) {
-                area_tmp = incremento_area_split(nodo.mbr[i].rect, rect);
+                area_tmp = incremento_area_split(nodo.mbr[i].rect, mbr.rect);
             } else {
                 area_tmp = incremento_area_split(nodo.mbr[i].rect, nodo.mbr[j].rect);
             }
@@ -46,7 +46,7 @@ Dos_nodos quadratic_split(Nodo nodo, Rectangulo rect)
     // nodo2.pos_mbr_padre = -> se asigna en insert;
     nodo2.ultimo = 0;
     if (rect2 == 2*T) {
-        nodo2.mbr[0] = make_mbr_2(rect, -1);
+        nodo2.mbr[0] = mbr;
     } else {
         nodo2.mbr[0] = nodo.mbr[rect2];
     }
@@ -71,8 +71,8 @@ Dos_nodos quadratic_split(Nodo nodo, Rectangulo rect)
             if (nodo1.ultimo == T+1) {
                 nodo2.ultimo++;
                 if (i==2*T) { 
-                    nodo2.mbr[nodo2.ultimo] = make_mbr_2(rect, -1);
-                    mbr2 = calcular_mbr_minimo(mbr2, rect);
+                    nodo2.mbr[nodo2.ultimo] = mbr;
+                    mbr2 = calcular_mbr_minimo(mbr2, mbr.rect);
                 } else {
                     nodo2.mbr[nodo2.ultimo] = nodo.mbr[i];
                     mbr2 = calcular_mbr_minimo(mbr2, nodo.mbr[i].rect);
@@ -81,8 +81,8 @@ Dos_nodos quadratic_split(Nodo nodo, Rectangulo rect)
             } else if (nodo2.ultimo == T+1) {
                 nodo1.ultimo++;
                 if (i==2*T) {           
-                    nodo1.mbr[nodo1.ultimo] = make_mbr_2(rect, -1);
-                    mbr1 = calcular_mbr_minimo(mbr1, rect);
+                    nodo1.mbr[nodo1.ultimo] = mbr;
+                    mbr1 = calcular_mbr_minimo(mbr1, mbr.rect);
                 } else {
                     nodo1.mbr[nodo1.ultimo] = nodo.mbr[i];
                     mbr1 = calcular_mbr_minimo(mbr1, nodo.mbr[i].rect);
@@ -92,8 +92,8 @@ Dos_nodos quadratic_split(Nodo nodo, Rectangulo rect)
 
             // si debo procesar el rectangulo 2*T+1 dado que no fue asignado al inicio => lo proceso.
             if (i == 2*T) {
-                area_inc1 = incremento_area_split(mbr1, rect);
-                area_inc2 = incremento_area_split(mbr2, rect);
+                area_inc1 = incremento_area_split(mbr1, mbr.rect);
+                area_inc2 = incremento_area_split(mbr2, mbr.rect);
             } else {
                 area_inc1 = incremento_area_split(mbr1, nodo.mbr[i].rect);
                 area_inc2 = incremento_area_split(mbr2, nodo.mbr[i].rect);
@@ -103,8 +103,8 @@ Dos_nodos quadratic_split(Nodo nodo, Rectangulo rect)
             if (area_inc1 < area_inc2) {
                 nodo1.ultimo++;
                 if (i==2*T) {           
-                    nodo1.mbr[nodo1.ultimo] = make_mbr_2(rect, -1);
-                    mbr1 = calcular_mbr_minimo(mbr1, rect);
+                    nodo1.mbr[nodo1.ultimo] = mbr;
+                    mbr1 = calcular_mbr_minimo(mbr1, mbr.rect);
                 } else {
                     nodo1.mbr[nodo1.ultimo] = nodo.mbr[i];
                     mbr1 = calcular_mbr_minimo(mbr1, nodo.mbr[i].rect);
@@ -112,8 +112,8 @@ Dos_nodos quadratic_split(Nodo nodo, Rectangulo rect)
             } else {
                 nodo2.ultimo++;
                 if (i==2*T) {
-                    nodo2.mbr[nodo2.ultimo] = make_mbr_2(rect, -1);
-                    mbr2 = calcular_mbr_minimo(mbr2, rect);
+                    nodo2.mbr[nodo2.ultimo] = mbr;
+                    mbr2 = calcular_mbr_minimo(mbr2, mbr.rect);
                 } else {
                     nodo2.mbr[nodo2.ultimo] = nodo.mbr[i];
                     mbr2 = calcular_mbr_minimo(mbr2, nodo.mbr[i].rect);
@@ -135,7 +135,7 @@ Dos_nodos quadratic_split(Nodo nodo, Rectangulo rect)
 }
 
 
-Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
+Dos_nodos linear_split(Nodo nodo, MBR mbr) {
 	
     int i; // itearador
     // se asume que el primer indice es el de menor y mayor distancia
@@ -159,32 +159,32 @@ Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
         // ocupar rect
         if (i==2*T) {
             // buscamos el lado mayor mínimo en el eje X.
-            if (rect.x2 < nodo.mbr[id_min_lado_mayor_x].rect.x2) {
+            if (mbr.rect.x2 < nodo.mbr[id_min_lado_mayor_x].rect.x2) {
                 id_min_lado_mayor_x = i;
-                min_lado_mayor_x = rect.x2;
+                min_lado_mayor_x = mbr.rect.x2;
             } 
             // buscamos el lado menor maximo en el eje x
-            if (rect.x1 > nodo.mbr[id_max_lado_menor_x].rect.x1) {
+            if (mbr.rect.x1 > nodo.mbr[id_max_lado_menor_x].rect.x1) {
                 id_max_lado_menor_x = i;
-                max_lado_menor_x = rect.x1;
+                max_lado_menor_x = mbr.rect.x1;
             }
             // buscamos el lado mayor mínimo en el eje Y.
-            if (rect.y2 < nodo.mbr[id_min_lado_mayor_y].rect.y2) {
+            if (mbr.rect.y2 < nodo.mbr[id_min_lado_mayor_y].rect.y2) {
                 id_min_lado_mayor_y = i;
-                min_lado_mayor_y = rect.y2;
+                min_lado_mayor_y = mbr.rect.y2;
             } 
             // buscamos el lado menor maximo en el eje Y
-            if (rect.y1 > nodo.mbr[id_max_lado_menor_y].rect.y1) {
+            if (mbr.rect.y1 > nodo.mbr[id_max_lado_menor_y].rect.y1) {
                 id_max_lado_menor_y = i;
-                max_lado_menor_y = rect.y1;
+                max_lado_menor_y = mbr.rect.y1;
             }
             // buscamos el lado mayor maximo en el eje Y
-            if (rect.y2 > max_eje_y) {
-                max_eje_y = rect.y2;
+            if (mbr.rect.y2 > max_eje_y) {
+                max_eje_y = mbr.rect.y2;
             }
             // buscamos el lado mayor maximo en el eje X
-            if (rect.x2 > max_eje_x) {
-                max_eje_x = rect.x2;
+            if (mbr.rect.x2 > max_eje_x) {
+                max_eje_x = mbr.rect.x2;
             }
         } else {
             // buscamos el lado mayor mínimo en el eje X.
@@ -240,7 +240,7 @@ Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
     nodo1.pos_mbr_padre = nodo.pos_mbr_padre;
     nodo1.ultimo = 0;
     if (rect1 == 2*T) {
-        nodo1.mbr[0] = make_mbr_2(rect, -1);
+        nodo1.mbr[0] = mbr;
     } else {
         nodo1.mbr[0] = nodo.mbr[rect1];
     }
@@ -250,7 +250,7 @@ Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
     //nodo2.pos_mbr_padre = -> se asigna después
     nodo2.ultimo = 0;
     if (rect2 == 2*T) {
-        nodo2.mbr[0] = make_mbr_2(rect, -1);
+        nodo2.mbr[0] = mbr;
     } else {
         nodo2.mbr[0] = nodo.mbr[rect2];
     }
@@ -272,8 +272,8 @@ Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
             if (nodo1.ultimo == T+1) {
                 nodo2.ultimo++;
                 if (i==2*T) {           
-                    nodo2.mbr[nodo2.ultimo] = make_mbr_2(rect, -1);
-                    mbr2 = calcular_mbr_minimo(mbr2, rect);
+                    nodo2.mbr[nodo2.ultimo] = mbr;
+                    mbr2 = calcular_mbr_minimo(mbr2, mbr.rect);
                 } else {
                     nodo2.mbr[nodo2.ultimo] = nodo.mbr[i];
                     mbr2 = calcular_mbr_minimo(mbr2, nodo.mbr[i].rect);
@@ -282,8 +282,8 @@ Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
             } else if (nodo2.ultimo == T+1) {
                 nodo1.ultimo++;
                 if (i==2*T) {           
-                    nodo1.mbr[nodo1.ultimo] = make_mbr_2(rect, -1);
-                    mbr1 = calcular_mbr_minimo(mbr1, rect);
+                    nodo1.mbr[nodo1.ultimo] = mbr;
+                    mbr1 = calcular_mbr_minimo(mbr1, mbr.rect);
                 } else {
                     nodo1.mbr[nodo1.ultimo] = nodo.mbr[i];
                     mbr1 = calcular_mbr_minimo(mbr1, nodo.mbr[i].rect);
@@ -295,8 +295,8 @@ Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
 
             // si debo procesar el rectangulo 2*T+1 dado que no fue asignado al inicio => lo proceso.
             if (i == 2*T) {
-                area_inc1 = incremento_area_split(mbr1, rect);
-                area_inc2 = incremento_area_split(mbr2, rect);
+                area_inc1 = incremento_area_split(mbr1, mbr.rect);
+                area_inc2 = incremento_area_split(mbr2, mbr.rect);
             } else {
                 area_inc1 = incremento_area_split(mbr1, nodo.mbr[i].rect);
                 area_inc2 = incremento_area_split(mbr2, nodo.mbr[i].rect);
@@ -306,8 +306,8 @@ Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
             if (area_inc1 < area_inc2) {
                 nodo1.ultimo++;
                 if (i==2*T) {           
-                    nodo1.mbr[nodo1.ultimo] = make_mbr_2(rect, -1);
-                    mbr1 = calcular_mbr_minimo(mbr1, rect);
+                    nodo1.mbr[nodo1.ultimo] = mbr;
+                    mbr1 = calcular_mbr_minimo(mbr1, mbr.rect);
                 } else {
                     nodo1.mbr[nodo1.ultimo] = nodo.mbr[i];
                     mbr1 = calcular_mbr_minimo(mbr1, nodo.mbr[i].rect);
@@ -315,8 +315,8 @@ Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
             }else if (area_inc1 > area_inc2) {
                 nodo2.ultimo++;
                 if (i==2*T) {
-                    nodo2.mbr[nodo2.ultimo] = make_mbr_2(rect, -1);
-                    mbr2 = calcular_mbr_minimo(mbr2, rect);
+                    nodo2.mbr[nodo2.ultimo] = mbr;
+                    mbr2 = calcular_mbr_minimo(mbr2, mbr.rect);
                 } else {
                     nodo2.mbr[nodo2.ultimo] = nodo.mbr[i];
                     mbr2 = calcular_mbr_minimo(mbr2, nodo.mbr[i].rect);
@@ -325,8 +325,8 @@ Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
             } else if (area(mbr1) < area(mbr2)) {
                 nodo1.ultimo++;
                 if (i==2*T) {           
-                    nodo1.mbr[nodo1.ultimo] = make_mbr_2(rect, -1);
-                    mbr1 = calcular_mbr_minimo(mbr1, rect);
+                    nodo1.mbr[nodo1.ultimo] = mbr;
+                    mbr1 = calcular_mbr_minimo(mbr1, mbr.rect);
                 } else {
                     nodo1.mbr[nodo1.ultimo] = nodo.mbr[i];
                     mbr1 = calcular_mbr_minimo(mbr1, nodo.mbr[i].rect);
@@ -334,8 +334,8 @@ Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
             } else if (area(mbr1) > area(mbr2)) {
                 nodo2.ultimo++;
                 if (i==2*T) {
-                    nodo2.mbr[nodo2.ultimo] = make_mbr_2(rect, -1);
-                    mbr2 = calcular_mbr_minimo(mbr2, rect);
+                    nodo2.mbr[nodo2.ultimo] = mbr;
+                    mbr2 = calcular_mbr_minimo(mbr2, mbr.rect);
                 } else {
                     nodo2.mbr[nodo2.ultimo] = nodo.mbr[i];
                     mbr2 = calcular_mbr_minimo(mbr2, nodo.mbr[i].rect);
@@ -344,8 +344,8 @@ Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
             } else if(nodo1.ultimo < nodo2.ultimo) {
                 nodo1.ultimo++;
                 if (i==2*T) {           
-                    nodo1.mbr[nodo1.ultimo] = make_mbr_2(rect, -1);
-                    mbr1 = calcular_mbr_minimo(mbr1, rect);
+                    nodo1.mbr[nodo1.ultimo] = mbr;
+                    mbr1 = calcular_mbr_minimo(mbr1, mbr.rect);
                 } else {
                     nodo1.mbr[nodo1.ultimo] = nodo.mbr[i];
                     mbr1 = calcular_mbr_minimo(mbr1, nodo.mbr[i].rect);
@@ -353,8 +353,8 @@ Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
             } else if(nodo1.ultimo > nodo2.ultimo) { 
                 nodo2.ultimo++;
                 if (i==2*T) {
-                    nodo2.mbr[nodo2.ultimo] = make_mbr_2(rect, -1);
-                    mbr2 = calcular_mbr_minimo(mbr2, rect);
+                    nodo2.mbr[nodo2.ultimo] = mbr;
+                    mbr2 = calcular_mbr_minimo(mbr2, mbr.rect);
                 } else {
                     nodo2.mbr[nodo2.ultimo] = nodo.mbr[i];
                     mbr2 = calcular_mbr_minimo(mbr2, nodo.mbr[i].rect);
@@ -363,8 +363,8 @@ Dos_nodos linear_split(Nodo nodo, Rectangulo rect) {
             } else {
                 nodo1.ultimo++;
                 if (i==2*T) {           
-                    nodo1.mbr[nodo1.ultimo] = make_mbr_2(rect, -1);
-                    mbr1 = calcular_mbr_minimo(mbr1, rect);
+                    nodo1.mbr[nodo1.ultimo] = mbr;
+                    mbr1 = calcular_mbr_minimo(mbr1, mbr.rect);
                 } else {
                     nodo1.mbr[nodo1.ultimo] = nodo.mbr[i];
                     mbr1 = calcular_mbr_minimo(mbr1, nodo.mbr[i].rect);
