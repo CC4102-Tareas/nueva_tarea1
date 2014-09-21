@@ -24,6 +24,8 @@ Nodo leer_nodo(int numero_nodo) {
 	fread(&(nodo), sizeof(Nodo), 1, fptr);
 
 	fclose(fptr);
+    
+   	((DEBUG_DISCO) ? printf("El nodo %d ha sido leido desde disco.\n", nodo.nodo_id):0);
 
 	return nodo;
 }
@@ -39,6 +41,8 @@ void insertar_nodo(Nodo nodo) {
 
 	fwrite(&(nodo), sizeof(Nodo), 1, fptr);
 	fclose(fptr);
+
+   	((DEBUG_DISCO) ? printf("El nodo %d ha sido insertado en disco.\n", nodo.nodo_id):0);
 }
 
 /**
@@ -57,6 +61,8 @@ actualizar_nodo(Nodo nodo) {
 	fwrite(&(nodo), sizeof(Nodo), 1, fptr);
 
 	fclose(fptr);
+
+   	((DEBUG_DISCO) ? printf("El nodo %d ha sido actualizado en disco.\n", nodo.nodo_id):0);
 }
 
 

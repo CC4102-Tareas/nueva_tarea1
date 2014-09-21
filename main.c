@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#define DEBUG_INSERTAR TRUE
+#define DEBUG_DISCO TRUE
+
 #include "estructuras.c"
 #include "dynamic_array.c"
 #include "operadores.c"
@@ -58,7 +62,6 @@ void imprimir_arbol(Nodo n, int pos_mbr, int space) {
 
 int main (int arc, char **argv) 
 {
-
 	init_rtree();
 	insertar(obtener_raiz(),make_rect(1.0,3.0,2.0,2.5));
 	insertar(obtener_raiz(),make_rect(1.0,2.0,3.0,5.0));

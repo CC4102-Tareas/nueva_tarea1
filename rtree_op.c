@@ -210,7 +210,9 @@ void insertar(Nodo nodo, Rectangulo rect)
     // si no está lleno
 	if (n.ultimo < 2*T-1)
 	{
-		n.ultimo++;
+		((DEBUG_INSERTAR) ? printf("Nodo %d no está lleno. Vamos a insertar aquí.\n", nodo.nodo_id):0);
+
+        n.ultimo++;
 		n.mbr[n.ultimo] = make_mbr_2(rect,-1);
 		
         actualizar_nodo(n);
@@ -222,6 +224,8 @@ void insertar(Nodo nodo, Rectangulo rect)
     // de lo contrario dividir el nodo
 	else
 	{	
+		((DEBUG_INSERTAR) ? printf("Nodo %d está lleno. Requiere hacer split.\n", nodo.nodo_id):0);
+
 		Dos_nodos dn = split(nodo, make_mbr_2(rect,-1));
 		ajustar_split(dn);
 	}
