@@ -69,18 +69,27 @@ int main (int arc, char **argv)
 	insertar(obtener_raiz(),make_rect(4.0,6.0,3.0,6.0));
 	insertar(obtener_raiz(),make_rect(6.0,7.0,9.0,10.0));
 	insertar(obtener_raiz(),make_rect(7.0,8.0,10.0,11.0));
-
-	//insertar(obtener_raiz(),make_rect(6.0,7.0,4.0,10.0));
-	//insertar(obtener_raiz(),make_rect(8.0,8.5,6.0,10.0));
-	//insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(6.0,7.0,4.0,10.0));
+	insertar(obtener_raiz(),make_rect(8.0,8.5,6.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
 
 	imprimir_arbol(obtener_raiz(), -1, 0);
-	imprimir_nodo(obtener_raiz());
+//	imprimir_nodo(obtener_raiz());
 	printf("--------------------------\n");
 	printf("--------------------------\n");
 
-	for (i=0;i <= rtree_ultimo; i++)
-		imprimir_nodo(leer_nodo(i));
+	//for (i=0;i <= rtree_ultimo; i++)
+		//imprimir_nodo(leer_nodo(i));
 
 
 
