@@ -58,7 +58,7 @@ float incremento_area(Rectangulo r1, Rectangulo r2) {
 	return area(mbrect) - area(r1);
 }
 
-float incremento_area_qs(Rectangulo r1, Rectangulo r2) {
+float incremento_area_split(Rectangulo r1, Rectangulo r2) {
 	Rectangulo mbrect = calcular_mbr_minimo(r1,r2);
 	return area(mbrect) - area(r1) - area(r2);
 }

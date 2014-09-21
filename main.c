@@ -3,10 +3,9 @@
 #include "estructuras.c"
 #include "dynamic_array.c"
 #include "operadores.c"
+#include "split.c"
 #include "r-tree.c"
 #include "rtree_op.c"
-
-
 
 /**
 	===================================================================
@@ -14,25 +13,25 @@
 	===================================================================
 */
 Nodo obtener_raiz(){
-return leer_nodo(rtree_root);
+    return leer_nodo(rtree_root);
 }
 
 void imprimir_nodo(Nodo r){
-	printf("----> nodo\n");
-	printf("ID: %d\n",r.nodo_id);
-	printf("Padre: %d\n",r.nodo_padre);
-	printf("Pos: %d\n",r.pos_mbr_padre);
-	printf("Ultimo: %d\n",r.ultimo);
 	int i;
 	Rectangulo mbrect;
-	for (i = 0; i <= r.ultimo; i++){
-		printf("----> hijos\n");
+	
+    printf("---> nodo ID: %d\n", r.nodo_id);
+	printf("|    Padre       : %d\n",r.nodo_padre);
+	printf("|    Pos en padre: %d\n",r.pos_mbr_padre);
+	printf("|    N° hijos    : %d (ultimo: %d)\n",r.ultimo+1, r.ultimo);
+    printf("|\n");
+	for (i = 0; i <= r.ultimo; i++) {
+		printf("|---> hijo %d\n", i);
 		mbrect = r.mbr[i].rect;
-		printf("MBR rectangulo: %f %f %f %f\n", mbrect.x1, mbrect.x2, mbrect.y1, mbrect.y2);
-		printf("mbr nodo hijo: rect: %d\n",r.mbr[i].nodo_hijo);
+		printf("|     MBR      : [%f,%f]x[%f,%f]\n", mbrect.x1, mbrect.x2, mbrect.y1, mbrect.y2);
+		printf("|     nodo hijo: %d\n",r.mbr[i].nodo_hijo);
 	}
-		printf("---- fin\n");
-
+		printf("----------------------------------------------------- fin\n");
 }
 
 
@@ -46,7 +45,7 @@ int main (int arc, char **argv)
 	insertar(obtener_raiz(),make_rect(4.0,5.0,4.0,6.0));
 	insertar(obtener_raiz(),make_rect(4.0,6.0,3.0,6.0));
 
-	insertar(obtener_raiz(),make_rect(6.0,7.0,9.0,10.0));
+	//insertar(obtener_raiz(),make_rect(6.0,7.0,9.0,10.0));
 	//insertar(obtener_raiz(),make_rect(7.0,8.0,10.0,11.0));
 	//insertar(obtener_raiz(),make_rect(6.0,7.0,4.0,10.0));
 	//insertar(obtener_raiz(),make_rect(8.0,8.5,6.0,10.0));

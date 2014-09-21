@@ -101,7 +101,7 @@ void ajustar_mbr_padres(int id_padre, int pos_mbr_padre, Rectangulo rect){
 	
     // se hace recursivamente hasta la raíz
     if (n.nodo_padre != -1)
-		ajustar1(n.nodo_padre, n.pos_mbr_padre, nuevo_mbr);
+		ajustar_mbr_padres(n.nodo_padre, n.pos_mbr_padre, nuevo_mbr);
 }
 
 /**
