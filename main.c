@@ -50,7 +50,7 @@ void imprimir_arbol(Nodo n, int pos_mbr, int space) {
     else
         printf(" %d:Nodo %d\n", pos_mbr, n.nodo_id);
     
-    // tabulo en espacios de 3
+    // tabulo en espacios de 4
     space = space + 4;
 
     for(i=0;i<=n.ultimo;i++)

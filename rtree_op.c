@@ -160,26 +160,26 @@ void ajustar_split(Dos_nodos dn)
 		aux.mbr[1] = make_mbr_2(dn.mbr2, dn.n2.nodo_id);
 		insertar_nodo(aux);		
             
-            // actualizamos las posiciones dentro del mbr del padre en los nodos hijos.
-			for(i=0; i < dn.n1.ultimo; i++)
-			{
-				if (dn.n1.mbr[i].nodo_hijo !=-1) {
-		    		aux = leer_nodo(dn.n1.mbr[i].nodo_hijo);
-			    	aux.nodo_padre = dn.n1.nodo_id;
-				    aux.pos_mbr_padre = i;
-				    actualizar_nodo(aux);
-                }
-			}
+        // actualizamos las posiciones dentro del mbr del padre en los nodos hijos.
+    	for(i=0; i <= dn.n1.ultimo; i++)
+		{
+			if (dn.n1.mbr[i].nodo_hijo !=-1) {
+	    		aux = leer_nodo(dn.n1.mbr[i].nodo_hijo);
+	        	aux.nodo_padre = dn.n1.nodo_id;
+			    aux.pos_mbr_padre = i;
+			    actualizar_nodo(aux);
+               }
+		}
 
-			for(i=0; i < dn.n2.ultimo; i++)
-			{
-				if (dn.n2.mbr[i].nodo_hijo !=-1) {
-    				aux = leer_nodo(dn.n2.mbr[i].nodo_hijo);
-	    			aux.nodo_padre = dn.n2.nodo_id;
-		    		aux.pos_mbr_padre = i;
-			    	actualizar_nodo(aux);
-                }   
-			}
+		for(i=0; i <= dn.n2.ultimo; i++)
+		{
+			if (dn.n2.mbr[i].nodo_hijo !=-1) {
+   				aux = leer_nodo(dn.n2.mbr[i].nodo_hijo);
+    			aux.nodo_padre = dn.n2.nodo_id;
+	    		aux.pos_mbr_padre = i;
+		    	actualizar_nodo(aux);
+               }   
+		}
 
 	}
 	// si no es raíz
