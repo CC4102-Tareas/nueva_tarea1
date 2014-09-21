@@ -40,12 +40,10 @@ void imprimir_nodo(Nodo r){
 
 void imprimir_arbol(Nodo n, int pos_mbr, int space) {
     int i;
-    if (space>0)
-        printf(" |");
     for(i=0;i<space;i++)
-        printf("-");
+        printf(" ");
     if (space>0)
-        printf(">");
+        printf("|->");
 
     if (pos_mbr == -1)
         printf(" Nodo %d\n", n.nodo_id);
@@ -53,7 +51,7 @@ void imprimir_arbol(Nodo n, int pos_mbr, int space) {
         printf(" %d:Nodo %d\n", pos_mbr, n.nodo_id);
     
     // tabulo en espacios de 3
-    space = space + 3;
+    space = space + 4;
 
     for(i=0;i<=n.ultimo;i++)
         if (n.mbr[i].nodo_hijo != -1)
@@ -70,10 +68,10 @@ int main (int arc, char **argv)
 	insertar(obtener_raiz(),make_rect(4.0,6.0,3.0,6.0));
 
 	insertar(obtener_raiz(),make_rect(6.0,7.0,9.0,10.0));
-	//insertar(obtener_raiz(),make_rect(7.0,8.0,10.0,11.0));
-	//insertar(obtener_raiz(),make_rect(6.0,7.0,4.0,10.0));
-	//insertar(obtener_raiz(),make_rect(8.0,8.5,6.0,10.0));
-	//insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(7.0,8.0,10.0,11.0));
+	insertar(obtener_raiz(),make_rect(6.0,7.0,4.0,10.0));
+	insertar(obtener_raiz(),make_rect(8.0,8.5,6.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
 
 	imprimir_arbol(obtener_raiz(), -1, 0);
 	imprimir_nodo(obtener_raiz());
