@@ -64,32 +64,36 @@ void imprimir_arbol(Nodo n, int pos_mbr, int space) {
 }
 
 int main (int arc, char **argv) 
-{
+{	int i;
+
 	init_rtree();
 	insertar(obtener_raiz(),make_rect(1.0,3.0,2.0,2.5));
 	insertar(obtener_raiz(),make_rect(1.0,2.0,3.0,5.0));
 	insertar(obtener_raiz(),make_rect(2.0,3.0,1.0,2.0));
-	imprimir_arbol(obtener_raiz(), -1, 0);
 	insertar(obtener_raiz(),make_rect(4.0,5.0,4.0,6.0));
-	imprimir_arbol(obtener_raiz(), -1, 0);
 	insertar(obtener_raiz(),make_rect(4.0,6.0,3.0,6.0));
 
-	imprimir_arbol(obtener_raiz(), -1, 0);
 	insertar(obtener_raiz(),make_rect(6.0,7.0,9.0,10.0));
-	//imprimir_arbol(obtener_raiz(), -1, 0);
-	//insertar(obtener_raiz(),make_rect(7.0,8.0,10.0,11.0));
-	//imprimir_arbol(obtener_raiz(), -1, 0);
-	//insertar(obtener_raiz(),make_rect(6.0,7.0,4.0,10.0));
-    //insertar(obtener_raiz(),make_rect(8.0,8.5,6.0,10.0));
-	//insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(7.0,8.0,10.0,11.0));
+	insertar(obtener_raiz(),make_rect(6.0,7.0,4.0,10.0));
+    insertar(obtener_raiz(),make_rect(8.0,8.5,6.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
 
 	imprimir_arbol(obtener_raiz(), -1, 0);
 	//imprimir_nodo(obtener_raiz());
 	//imprimir_nodo(leer_nodo(0));
 	//imprimir_nodo(leer_nodo(1));
 	//imprimir_nodo(leer_nodo(2));
-
-	return 0; // todo ok
+	
+    return 0; // todo ok
 
 }
 	/*	Rectangulo rect;

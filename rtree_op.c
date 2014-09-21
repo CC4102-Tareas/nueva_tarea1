@@ -57,6 +57,7 @@ Dos_nodos split(Nodo nodo, MBR m)
 {
 	int i;
 	Dos_nodos dn;
+	
 	// Nodo 1
 	dn.n1.nodo_id = nodo.nodo_id;
 	dn.n1.ultimo = T;
@@ -95,35 +96,18 @@ Dos_nodos split(Nodo nodo, MBR m)
 	return dn;
 }
 
-/**
-    Actualiza el mbr mínimo en el padre.
-    TODO: Eliminar ya que esto se hace en insertar_hoja.
-
-void ajustar_mbr_padres(int id_padre, int pos_mbr_padre, Rectangulo rect){
-
-	Nodo n = leer_nodo(id_padre);
-	Rectangulo nuevo_mbr = calcular_mbr_minimo(n.mbr[pos_mbr_padre].rect, rect);
-	n.mbr[pos_mbr_padre].rect = nuevo_mbr;
-
-	actualizar_nodo(n);
-	
-    // se hace recursivamente hasta la raíz
-    if (n.nodo_padre != -1)
-		ajustar_mbr_padres(n.nodo_padre, n.pos_mbr_padre, nuevo_mbr);
-}
-*/
-/**
-    ajusta el árbol cuando se produce un split.
-*/
 void ajustar_split(Dos_nodos dn)
 {	 
     Nodo aux, p;
     int i;    // iterador
-
-	// si es raiz y está lleno
+	
+    printf("Ajusto árbol porque se splitteó el nodo%d\n",dn.n1.nodo_id);
+	printf("Que tiene nodo padre%d\n",dn.n1.nodo_padre);
+	printf("Que tiene posicion %d padre\n",dn.n1.pos_mbr_padre);
+	printf("Y cuyo ultimo es %d \n",dn.n1.ultimo);
+	// si es raiz
 	if (dn.n1.nodo_padre == -1){
-
-		((DEBUG_INSERTAR) ? printf("Se espliteó el nodo %d. Se debe agregar un nuevo nodo.\n", dn.n1.nodo_id):0);
+    	printf("en ajustar_split entro al if\n");
         // ===================================================================
 		// TODO: crear un nuevo nodo NN y una nueva raíz NR; pasos:
 		// repartir rectángulos entre nuevo nodo NN y antigua raíz AR (split)
@@ -183,8 +167,9 @@ void ajustar_split(Dos_nodos dn)
 	}
 	// si no es raíz
 	else
-	{	
-    	p = leer_nodo(dn.n1.nodo_padre);
+	{		
+        printf("en ajustar_split entro al else\n");
+		p = leer_nodo(dn.n1.nodo_padre);
 
 		// si está lleno
 		if (p.ultimo == 2*T-1)
@@ -247,11 +232,11 @@ void insertar(Nodo nodo, Rectangulo rect)
 
     // se busca el nodo donde debe ser insertado. Siempre retorna un nodo hoja.
 	Nodo n = encontrar_hoja(nodo, rect);
-
+	printf("encontrar_hoja me devolvio nodo %d\n", n.nodo_id);
     // si no está lleno
 	if (n.ultimo < 2*T-1)
 	{
-		((DEBUG_INSERTAR) ? printf("Nodo %d no está lleno. Vamos a insertar aquí.\n", nodo.nodo_id):0);
+		((DEBUG_INSERTAR) ? printf("Nodo %d no está lleno. Vamos a insertar aquí.\n", n.nodo_id):0);
 
         n.ultimo++;
 		n.mbr[n.ultimo] = make_mbr_2(rect,-1);
@@ -261,9 +246,9 @@ void insertar(Nodo nodo, Rectangulo rect)
     // de lo contrario dividir el nodo
 	else
 	{	
-		((DEBUG_INSERTAR) ? printf("Nodo %d está lleno. Requiere hacer split.\n", nodo.nodo_id):0);
+		((DEBUG_INSERTAR) ? printf("Nodo %d está lleno. Requiere hacer split.\n", n.nodo_id):0);
 
-		Dos_nodos dn = split(nodo, make_mbr_2(rect,-1));
+		Dos_nodos dn = split(n, make_mbr_2(rect,-1));
 		ajustar_split(dn);
 	}
 }
