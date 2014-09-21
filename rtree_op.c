@@ -135,30 +135,43 @@ void ajustar_split(Dos_nodos dn)
 
             // actualizar mbr del nodo spliteado
 			p.mbr[dn.n1.pos_mbr_padre].rect = dn.mbr1;
-            // volver a hacer split sobre el nodo padre insertanto el nuevo nodo creado
+            // volver a hacer split sobre el nodo padre insertando el nuevo nodo creado
+            // OJO: que el split no asigna nodo_padre ni pos_mbr_padre a dn.n2 porque no sabe quien será.
 			Dos_nodos dn_ = quadratic_split(p, make_mbr_2(dn.mbr2, dn.n2.nodo_id));
             
             // actualizamos las posiciones dentro del mbr del padre en los nodos hijos.
 			if (dn_.n1.mbr[0].nodo_hijo !=-1) 
 			{
 			    for(i=0; i <= dn_.n1.ultimo; i++) {
-                    aux = leer_nodo(dn_.n1.mbr[i].nodo_hijo);
-	    			aux.nodo_padre = dn_.n1.nodo_id;
-		    		aux.pos_mbr_padre = i;
-			    	actualizar_nodo(aux);
+                    if (dn_.n1.mbr[i].nodo_hijo == dn.n2.nodo_id) {
+                        dn.n2.nodo_padre = dn_.n1.nodo_id;
+                        dn.n2.pos_mbr_padre = i;
+                        insertar_nodo(dn.n2);
+                    } else {
+                        aux = leer_nodo(dn_.n1.mbr[i].nodo_hijo);
+	        			aux.nodo_padre = dn_.n1.nodo_id;
+		        		aux.pos_mbr_padre = i;
+			        	actualizar_nodo(aux);
+                    }
                 }
 			}
 
 			if (dn_.n2.mbr[i].nodo_hijo !=-1) 
 			{
 			    for(i=0; i <= dn_.n2.ultimo; i++) {
-    				aux = leer_nodo(dn_.n2.mbr[i].nodo_hijo);
-	    			aux.nodo_padre = dn_.n2.nodo_id;
-		    		aux.pos_mbr_padre = i;
-				    actualizar_nodo(aux);
+                    if (dn_.n2.mbr[i].nodo_hijo == dn.n2.nodo_id) {
+                        dn.n2.nodo_padre = dn_.n2.nodo_id;
+                        dn.n2.pos_mbr_padre = i;
+                        insertar_nodo(dn.n2);
+                    } else {
+          				aux = leer_nodo(dn_.n2.mbr[i].nodo_hijo);
+    	    			aux.nodo_padre = dn_.n2.nodo_id;
+	    	    		aux.pos_mbr_padre = i;
+		    		    actualizar_nodo(aux);
+                    }
                 }
 			}
-
+            
 			ajustar_split(dn_);
 		}
 		// si hay espacio
