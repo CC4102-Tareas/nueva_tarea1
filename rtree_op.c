@@ -1,29 +1,32 @@
+/**
+    Busca un rectágulo dentro de un r-tree
+*/
 Nodo encontrar_hoja(Nodo nodo, Rectangulo rect) {
 
 	// Si el nodo es un nodo hoja (i.e. si sus MBR apuntan a -1),
 	// devolver ese nodo
-
 	if (nodo.mbr[0].nodo_hijo == -1) 
 	{	
 		return nodo;
 	}
-
 	// Si no, recorremos los MBR's del nodo e identificamos el de menor
 	// incremento de área, para buscar por ese subárbol
 	else
 	{
-		int i;                     	// iterador
+		int i;                     	                         // iterador
 		float min = incremento_area(nodo.mbr[0].rect, rect); // incremento de area minimo
-		float amin = area(nodo.mbr[0].rect);					  // area del mbr que da menor inc de area
-		int imin = 0; // indice del MBR con menor incremento de área.
-		float curr_inc_area; // inc area actual
-		float curr_area;		// area actual
+		float amin = area(nodo.mbr[0].rect);				 // area del mbr que da menor inc de area
+		int imin = 0;                                        // indice del MBR con menor incremento de área.
+		float curr_inc_area;                                 // inc area actual
+		float curr_area;		                             // area actual
 
-		for (i = 1; i < i<=nodo.ultimo; i++)
+		for (i = 1; i<=nodo.ultimo; i++)
 		{
 			curr_inc_area = incremento_area(nodo.mbr[i].rect, rect);
 			curr_area = area(nodo.mbr[i].rect);
-
+            
+            // el criterio arbitrario es dejar el último MBR encontrado cuando todas las
+            // demás condiciones son iguales.
 			if (curr_inc_area < min || (curr_inc_area == min && curr_area <= amin))
 			{
 				min = curr_inc_area;
@@ -32,6 +35,10 @@ Nodo encontrar_hoja(Nodo nodo, Rectangulo rect) {
 			}
 		}
 		// TODO: actualizar en disco
+        //nodo.mbr[imin].rect = mbr_minimo(nodo.mbr[imin].rect, rect);
+        //actualizar_en_disco(nodo);
+
+        // buscar en el hijo encontrado segun criterio de arriba.
 		nodo = leer_nodo(nodo.mbr[imin].nodo_hijo);
 		return encontrar_hoja(nodo, rect);
 	}
