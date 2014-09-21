@@ -37,10 +37,9 @@ float area(Rectangulo rect)
 }
 
 /**
-	Calcula el incremento de área de un mbr.
+	Calcula el MBR mínimo.
 */
-
-Rectangulo calculate_mbr(Rectangulo r1, Rectangulo r2)
+Rectangulo calcular_mbr_minimo(Rectangulo r1, Rectangulo r2)
 {
 	Rectangulo r;
 
@@ -51,12 +50,15 @@ Rectangulo calculate_mbr(Rectangulo r1, Rectangulo r2)
 	return r;
 }
 
+/**
+	Calcula el incremento de área de un mbr.
+*/
 float incremento_area(Rectangulo r1, Rectangulo r2) {
-	Rectangulo mbrect = calculate_mbr(r1,r2);
+	Rectangulo mbrect = calcular_mbr_minimo(r1,r2);
 	return area(mbrect) - area(r1);
 }
 
 float incremento_area_qs(Rectangulo r1, Rectangulo r2) {
-	Rectangulo mbrect = calculate_mbr(r1,r2);
+	Rectangulo mbrect = calcular_mbr_minimo(r1,r2);
 	return area(mbrect) - area(r1) - area(r2);
 }

@@ -1,5 +1,6 @@
 /**
-    Busca un rectágulo dentro de un r-tree
+    Busca un nodo hoja según el rectángulo rect. 
+    Ocupado en @insertar(Nodo, Rectangulo)
 */
 Nodo encontrar_hoja(Nodo nodo, Rectangulo rect) {
 
@@ -35,7 +36,7 @@ Nodo encontrar_hoja(Nodo nodo, Rectangulo rect) {
 			}
 		}
 		// TODO: actualizar en disco
-        //nodo.mbr[imin].rect = mbr_minimo(nodo.mbr[imin].rect, rect);
+        //nodo.mbr[imin].rect = calcular_mbr_minimo(nodo.mbr[imin].rect, rect);
         //actualizar_en_disco(nodo);
 
         // buscar en el hijo encontrado segun criterio de arriba.
@@ -71,14 +72,14 @@ Dos_nodos split(Nodo nodo, MBR m)
 	for (i = 1; i < T; i++)
 	{	
 		dn.n1.mbr[i] = nodo.mbr[i];
-		mbr1 = calculate_mbr(mbr1, nodo.mbr[i].rect);
+		mbr1 = calcular_mbr_minimo(mbr1, nodo.mbr[i].rect);
 		dn.n2.mbr[i] = nodo.mbr[T+i];
-		mbr2 = calculate_mbr(mbr2, nodo.mbr[T+i].rect);
+		mbr2 = calcular_mbr_minimo(mbr2, nodo.mbr[T+i].rect);
 
 	}		
 
 	dn.n1.mbr[i] = m;
-	mbr1 = calculate_mbr(mbr1, m.rect);
+	mbr1 = calcular_mbr_minimo(mbr1, m.rect);
 
 	dn.mbr1 = mbr1;
 	dn.mbr2 = mbr2;
@@ -86,16 +87,26 @@ Dos_nodos split(Nodo nodo, MBR m)
 	return dn;
 }
 
+/**
+    Actualiza el mbr mínimo en el padre.
+    TODO: Eliminar ya que esto se hace en insertar_hoja.
+*/
 void ajustar1(int id_padre, int pos_mbr_padre, Rectangulo rect){
 
 	Nodo n = leer_nodo(id_padre);
-	Rectangulo nuevo = calculate_mbr(n.mbr[pos_mbr_padre].rect, rect);
-	n.mbr[pos_mbr_padre].rect = nuevo;
+	Rectangulo nuevo_mbr = calcular_mbr_minimo(n.mbr[pos_mbr_padre].rect, rect);
+	n.mbr[pos_mbr_padre].rect = nuevo_mbr;
+
 	actualizar_nodo(n);
-	if (n.nodo_padre != -1)
-		ajustar1(n.nodo_padre, n.pos_mbr_padre, nuevo);
+	
+    // se hace recursivamente hasta la raíz
+    if (n.nodo_padre != -1)
+		ajustar1(n.nodo_padre, n.pos_mbr_padre, nuevo_mbr);
 }
 
+/**
+    ajusta el árbol cuando se produce un split.
+*/
 void ajustar2(Dos_nodos dn)
 {	 
 	// si es raiz
@@ -174,23 +185,32 @@ void ajustar2(Dos_nodos dn)
 			actualizar_nodo(dn.n1);
 			insertar_nodo(dn.n2);
 			if (p.nodo_padre != -1)
-				ajustar1(p.nodo_padre, p.pos_mbr_padre, calculate_mbr(dn.mbr1, dn.mbr2));
+				ajustar1(p.nodo_padre, p.pos_mbr_padre, calcular_mbr_minimo(dn.mbr1, dn.mbr2));
 		}
 	}
 }
 
-
+/**
+    Inserta un rectángulo dentro de un r-tree
+*/
 void insertar(Nodo nodo, Rectangulo rect)
 {
+    // se busca el nodo donde debe ser insertado.
 	Nodo n = encontrar_hoja(nodo, rect);
+
+    // si no está lleno
 	if (n.ultimo < 2*T-1)
 	{
 		n.ultimo++;
 		n.mbr[n.ultimo] = make_mbr_2(rect,-1);
-		actualizar_nodo(n);
-		if (n.nodo_padre != -1)
+		
+        actualizar_nodo(n);
+		
+        // si el nodo n no es la raíz
+        if (n.nodo_padre != -1)
 			ajustar1(nodo.nodo_padre, nodo.pos_mbr_padre,rect);
 	}
+    // de lo contrario dividir el nodo
 	else
 	{	
 		Dos_nodos dn = split(nodo, make_mbr_2(rect,-1));
@@ -198,6 +218,9 @@ void insertar(Nodo nodo, Rectangulo rect)
 	}
 }
 
+/**
+    Entrega un arreglo de rectángulos que intersectan con el rectágulo dado.
+*/
 Dynamic_array* buscar(Nodo nodo, Rectangulo rect)
 {
 	int i, j;
