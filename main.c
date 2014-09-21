@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define DEBUG_INSERTAR TRUE
+#define DEBUG_INSERTAR FALSE
 #define DEBUG_DISCO FALSE
 
 #include "estructuras.c"
@@ -56,6 +56,11 @@ void imprimir_arbol(Nodo n, int pos_mbr, int space) {
     for(i=0;i<=n.ultimo;i++)
         if (n.mbr[i].nodo_hijo != -1)
             imprimir_arbol(leer_nodo(n.mbr[i].nodo_hijo), i, space);
+        else {
+            //for(i=0;i<space;i++) {printf(" ");} 
+            //printf("|->");
+            //printf("[%f,%f]x[%f,%f] | nodo_hijo: %d\n",n.mbr[i].rect.x1, n.mbr[i].rect.x2, n.mbr[i].rect.y1, n.mbr[i].rect.y2, n.mbr[i].nodo_hijo);
+        }
 }
 
 int main (int arc, char **argv) 
@@ -64,19 +69,24 @@ int main (int arc, char **argv)
 	insertar(obtener_raiz(),make_rect(1.0,3.0,2.0,2.5));
 	insertar(obtener_raiz(),make_rect(1.0,2.0,3.0,5.0));
 	insertar(obtener_raiz(),make_rect(2.0,3.0,1.0,2.0));
+	imprimir_arbol(obtener_raiz(), -1, 0);
 	insertar(obtener_raiz(),make_rect(4.0,5.0,4.0,6.0));
+	imprimir_arbol(obtener_raiz(), -1, 0);
 	insertar(obtener_raiz(),make_rect(4.0,6.0,3.0,6.0));
 
+	imprimir_arbol(obtener_raiz(), -1, 0);
 	insertar(obtener_raiz(),make_rect(6.0,7.0,9.0,10.0));
-	insertar(obtener_raiz(),make_rect(7.0,8.0,10.0,11.0));
-	insertar(obtener_raiz(),make_rect(6.0,7.0,4.0,10.0));
-    insertar(obtener_raiz(),make_rect(8.0,8.5,6.0,10.0));
-	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	//imprimir_arbol(obtener_raiz(), -1, 0);
+	//insertar(obtener_raiz(),make_rect(7.0,8.0,10.0,11.0));
+	//imprimir_arbol(obtener_raiz(), -1, 0);
+	//insertar(obtener_raiz(),make_rect(6.0,7.0,4.0,10.0));
+    //insertar(obtener_raiz(),make_rect(8.0,8.5,6.0,10.0));
+	//insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
 
 	imprimir_arbol(obtener_raiz(), -1, 0);
-	imprimir_nodo(obtener_raiz());
-	imprimir_nodo(leer_nodo(0));
-	imprimir_nodo(leer_nodo(1));
+	//imprimir_nodo(obtener_raiz());
+	//imprimir_nodo(leer_nodo(0));
+	//imprimir_nodo(leer_nodo(1));
 	//imprimir_nodo(leer_nodo(2));
 
 	return 0; // todo ok

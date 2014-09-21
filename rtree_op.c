@@ -41,11 +41,9 @@ Nodo encontrar_hoja(Nodo nodo, Rectangulo rect) {
 		// TODO: actualizar en disco
         nodo.mbr[imin].rect = calcular_mbr_minimo(nodo.mbr[imin].rect, rect);
         actualizar_nodo(nodo);
- printf("%d\n", imin);       
- printf("%d\n", nodo.mbr[imin].nodo_hijo);       
- printf("%f %f %f %f\n", nodo.mbr[imin].rect.x1,nodo.mbr[imin].rect.x2, nodo.mbr[imin].rect.y1, nodo.mbr[imin].rect.y2);       
- printf("%d\n", nodo.mbr[0].nodo_hijo);       
- printf("%d\n", nodo.ultimo);       
+// printf("imin: %d\n", imin);       
+// printf("MBR.nodo_hijo: %d\n", nodo.mbr[imin].nodo_hijo);       
+// printf("MBR.rect: %f %f %f %f\n", nodo.mbr[imin].rect.x1,nodo.mbr[imin].rect.x2, nodo.mbr[imin].rect.y1, nodo.mbr[imin].rect.y2);       
         // buscar en el hijo encontrado segun criterio de arriba.
 		nodo = leer_nodo(nodo.mbr[imin].nodo_hijo);
 
@@ -122,9 +120,10 @@ void ajustar_split(Dos_nodos dn)
     Nodo aux, p;
     int i;    // iterador
 
-	// si es raiz
+	// si es raiz y está lleno
 	if (dn.n1.nodo_padre == -1){
 
+		((DEBUG_INSERTAR) ? printf("Se espliteó el nodo %d. Se debe agregar un nuevo nodo.\n", dn.n1.nodo_id):0);
         // ===================================================================
 		// TODO: crear un nuevo nodo NN y una nueva raíz NR; pasos:
 		// repartir rectángulos entre nuevo nodo NN y antigua raíz AR (split)
@@ -161,44 +160,46 @@ void ajustar_split(Dos_nodos dn)
 		insertar_nodo(aux);		
             
         // actualizamos las posiciones dentro del mbr del padre en los nodos hijos.
-    	for(i=0; i <= dn.n1.ultimo; i++)
+	    if (dn.n1.mbr[0].nodo_hijo !=-1) 
 		{
-			if (dn.n1.mbr[i].nodo_hijo !=-1) {
+    	    for(i=0; i <= dn.n1.ultimo; i++) {
 	    		aux = leer_nodo(dn.n1.mbr[i].nodo_hijo);
 	        	aux.nodo_padre = dn.n1.nodo_id;
 			    aux.pos_mbr_padre = i;
 			    actualizar_nodo(aux);
-               }
+            }
 		}
 
-		for(i=0; i <= dn.n2.ultimo; i++)
+    	if (dn.n2.mbr[0].nodo_hijo !=-1) 
 		{
-			if (dn.n2.mbr[i].nodo_hijo !=-1) {
+		    for(i=0; i <= dn.n2.ultimo; i++) {
    				aux = leer_nodo(dn.n2.mbr[i].nodo_hijo);
     			aux.nodo_padre = dn.n2.nodo_id;
 	    		aux.pos_mbr_padre = i;
 		    	actualizar_nodo(aux);
-               }   
+            }   
 		}
 
 	}
 	// si no es raíz
 	else
 	{	
-		p = leer_nodo(dn.n1.nodo_padre);
+    	p = leer_nodo(dn.n1.nodo_padre);
 
 		// si está lleno
 		if (p.ultimo == 2*T-1)
 		{	
+		    ((DEBUG_INSERTAR) ? printf("El nodo %d spliteado tiene un nodo padre que también está lleno.\n", dn.n1.nodo_id):0);
+
             // actualizar mbr del nodo spliteado
 			p.mbr[dn.n1.pos_mbr_padre].rect = dn.mbr1;
             // volver a hacer split sobre el nodo padre insertanto en nuevo nodo creado
 			Dos_nodos dn_ = split(p, make_mbr_2(dn.mbr2,dn.n2.nodo_id));
             
             // actualizamos las posiciones dentro del mbr del padre en los nodos hijos.
-			for(i=0; i <= dn_.n1.ultimo; i++)
+			if (dn_.n1.mbr[0].nodo_hijo !=-1) 
 			{
-				if (dn_.n1.mbr[i].nodo_hijo !=-1) {
+			    for(i=0; i <= dn_.n1.ultimo; i++) {
                     aux = leer_nodo(dn_.n1.mbr[i].nodo_hijo);
 	    			aux.nodo_padre = dn_.n1.nodo_id;
 		    		aux.pos_mbr_padre = i;
@@ -206,9 +207,9 @@ void ajustar_split(Dos_nodos dn)
                 }
 			}
 
-			for(i=0; i <= dn_.n2.ultimo; i++)
+			if (dn_.n2.mbr[i].nodo_hijo !=-1) 
 			{
-				if (dn_.n2.mbr[i].nodo_hijo !=-1) {
+			    for(i=0; i <= dn_.n2.ultimo; i++) {
     				aux = leer_nodo(dn_.n2.mbr[i].nodo_hijo);
 	    			aux.nodo_padre = dn_.n2.nodo_id;
 		    		aux.pos_mbr_padre = i;
@@ -221,6 +222,8 @@ void ajustar_split(Dos_nodos dn)
 		// si hay espacio
 		else
 		{	
+		    ((DEBUG_INSERTAR) ? printf("El nodo %d spliteado tiene un nodo padre con espacio.\n", dn.n1.nodo_id):0);
+
 			p.ultimo++;
 			p.mbr[p.ultimo] = make_mbr_2(dn.mbr2, dn.n2.nodo_id);
 			dn.n2.pos_mbr_padre = p.ultimo;
@@ -242,7 +245,7 @@ void insertar(Nodo nodo, Rectangulo rect)
 {
     ((DEBUG_INSERTAR) ? printf("Insertar rectangulo [%f,%f]x[%f,%f].\n", rect.x1, rect.x2, rect.y1, rect.y2):0);
 
-    // se busca el nodo donde debe ser insertado.
+    // se busca el nodo donde debe ser insertado. Siempre retorna un nodo hoja.
 	Nodo n = encontrar_hoja(nodo, rect);
 
     // si no está lleno
@@ -254,10 +257,6 @@ void insertar(Nodo nodo, Rectangulo rect)
 		n.mbr[n.ultimo] = make_mbr_2(rect,-1);
 		
         actualizar_nodo(n);
-		
-        // si el nodo n no es la raíz
-        //if (n.nodo_padre != -1)
-			//ajustar_mbr_padres(nodo.nodo_padre, nodo.pos_mbr_padre,rect);
 	}
     // de lo contrario dividir el nodo
 	else
