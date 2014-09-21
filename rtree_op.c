@@ -36,8 +36,8 @@ Nodo encontrar_hoja(Nodo nodo, Rectangulo rect) {
 			}
 		}
 		// TODO: actualizar en disco
-        //nodo.mbr[imin].rect = calcular_mbr_minimo(nodo.mbr[imin].rect, rect);
-        //actualizar_en_disco(nodo);
+        nodo.mbr[imin].rect = calcular_mbr_minimo(nodo.mbr[imin].rect, rect);
+        actualizar_nodo(nodo);
 
         // buscar en el hijo encontrado segun criterio de arriba.
 		nodo = leer_nodo(nodo.mbr[imin].nodo_hijo);
@@ -193,8 +193,8 @@ void ajustar_split(Dos_nodos dn)
 			actualizar_nodo(dn.n1);
 			insertar_nodo(dn.n2);
             // si no es la raíz, ajustar los mbr de los ancestros.
-			if (p.nodo_padre != -1)
-				ajustar_mbr_padres(p.nodo_padre, p.pos_mbr_padre, calcular_mbr_minimo(dn.mbr1, dn.mbr2));
+			//if (p.nodo_padre != -1)
+				//ajustar_mbr_padres(p.nodo_padre, p.pos_mbr_padre, calcular_mbr_minimo(dn.mbr1, dn.mbr2));
 		}
 	}
 }
@@ -218,8 +218,8 @@ void insertar(Nodo nodo, Rectangulo rect)
         actualizar_nodo(n);
 		
         // si el nodo n no es la raíz
-        if (n.nodo_padre != -1)
-			ajustar_mbr_padres(nodo.nodo_padre, nodo.pos_mbr_padre,rect);
+        //if (n.nodo_padre != -1)
+			//ajustar_mbr_padres(nodo.nodo_padre, nodo.pos_mbr_padre,rect);
 	}
     // de lo contrario dividir el nodo
 	else

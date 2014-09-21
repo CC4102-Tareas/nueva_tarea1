@@ -10,12 +10,12 @@
 
 Nodo leer_nodo(int numero_nodo) {
 	FILE *fptr;
-	
+	printf("%d\n", numero_nodo);
 	// se abre el archivo para lectura
 	fptr = fopen(NAME_FILE, "rb");
 
 	if(fseek(fptr, numero_nodo*TAMANO_PAGINA, SEEK_SET)) {
-		printf("Error al intentar posicionarse en la página.");	
+		printf("Error al intentar posicionarse en la página.\n");	
 	}
 
 	Nodo nodo;
