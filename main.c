@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define DEBUG_INSERTAR TRUE
-#define DEBUG_DISCO TRUE
+#define DEBUG_INSERTAR FALSE
+#define DEBUG_DISCO FALSE
 
 #include "estructuras.c"
 #include "dynamic_array.c"
