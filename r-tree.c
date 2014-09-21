@@ -37,11 +37,6 @@ void insertar_nodo(Nodo nodo) {
 	// se abre el archivo para lectura
 	fptr = fopen(NAME_FILE, "a+b");
 
-	// se posiciona al final del archivo
-	//if(fseek(fptr, 0, SEEK_END)) {
-	//	printf("Error al intentar posicionarse en la página.");
-
-	//}
 	fwrite(&(nodo), sizeof(Nodo), 1, fptr);
 	fclose(fptr);
 }
@@ -59,7 +54,6 @@ actualizar_nodo(Nodo nodo) {
 		printf("Error al intentar posicionarse en la página.");
 	}
 
-
 	fwrite(&(nodo), sizeof(Nodo), 1, fptr);
 
 	fclose(fptr);
@@ -68,36 +62,25 @@ actualizar_nodo(Nodo nodo) {
 
 /**
 	Inicializa un r-tree.
-	Crea un archivo de nombre 'r-tree.bin' y retorna el
-	nodo raiz del r.tree
+	Crea un archivo de nombre 'r-tree.bin' con un nodo raíz
 */
 void init_rtree() {
 	FILE *fptr;
-	int status;
- 
-	status = remove(NAME_FILE);
- 
-	if(status == 0)
-		printf("%s archivo eliminado.\n", NAME_FILE);
-	else {	
-		//printf("Incapaz de eliminar archivo.\n");
-		//perror("Error");
-	}
 
 	// crea el archivo
 	fptr = fopen(NAME_FILE, "wb");
 	fclose(fptr);
-
 	
 	Nodo nodo;
 	nodo.nodo_id = 0;
-	nodo.nodo_padre = -1;
-	nodo.pos_mbr_padre = -1;
-	nodo.ultimo = -1;
-	nodo.mbr[0].nodo_hijo = -1;
-	rtree_root = 0;
+	nodo.nodo_padre = -1;    // indica que es la raiz
+	nodo.pos_mbr_padre = -1; // también indica que es la raíz
+	nodo.ultimo = -1;        // no tiene MBRs
+	nodo.mbr[0].nodo_hijo = -1; // como es el único, es una hoja.
+
+    // se actualiza el indice de la raiz y el ultimo identificador usado.
+	rtree_root = 0;     
 	rtree_ultimo = 0;
 	
 	insertar_nodo(nodo);
-
 }
