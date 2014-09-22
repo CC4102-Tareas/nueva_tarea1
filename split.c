@@ -150,6 +150,7 @@ Dos_nodos linear_split(Nodo nodo, MBR mbr) {
     
     // se usan valores por default del mbr 0.
     float max_eje_x = nodo.mbr[0].rect.x2, max_eje_y = nodo.mbr[0].rect.y2;
+    float min_eje_x = nodo.mbr[0].rect.x1, min_eje_y = nodo.mbr[0].rect.y1;
 
     float min_lado_mayor_x=nodo.mbr[0].rect.x2, max_lado_menor_x=nodo.mbr[0].rect.x1;
     float min_lado_mayor_y=nodo.mbr[0].rect.y2, max_lado_menor_y=nodo.mbr[0].rect.y1;
@@ -192,6 +193,14 @@ Dos_nodos linear_split(Nodo nodo, MBR mbr) {
             if (mbr.rect.x2 > max_eje_x) {
                 max_eje_x = mbr.rect.x2;
             }
+            // buscamos el lado menor mínimo el eje Y
+            if (mbr.rect.y1 < min_eje_y) {
+                min_eje_y = mbr.rect.y1;
+            }
+            // buscamos el lado menor mínimo el eje X
+            if (mbr.rect.x1 < min_eje_x) {
+                min_eje_x = mbr.rect.x1;
+            }
         } else {
             // buscamos el lado mayor mínimo en el eje X.
             if (nodo.mbr[i].rect.x2 < nodo.mbr[id_min_lado_mayor_x].rect.x2) {
@@ -221,12 +230,20 @@ Dos_nodos linear_split(Nodo nodo, MBR mbr) {
             if (nodo.mbr[i].rect.x2 > max_eje_x) {
                 max_eje_x = nodo.mbr[i].rect.x2;
             }
+            // buscamos el lado menor mínimo el eje Y
+            if (nodo.mbr[i].rect.y1 < min_eje_y) {
+                min_eje_y = nodo.mbr[i].rect.y1;
+            }
+            // buscamos el lado menor mínimo el eje X
+            if (nodo.mbr[i].rect.x1 < min_eje_x) {
+                min_eje_x = nodo.mbr[i].rect.x1;
+            }
         }
     }
 
     // aquí tenemos todos los rectángulos. Calculamos w_x y w_y
-    w_x = abs(max_lado_menor_x - min_lado_mayor_x)/max_eje_x;
-    w_y = abs(max_lado_menor_y - min_lado_mayor_y)/max_eje_y;
+    w_x = abs(max_lado_menor_x - min_lado_mayor_x)/(max_eje_x-min_eje_x);
+    w_y = abs(max_lado_menor_y - min_lado_mayor_y)/(max_eje_y-min_eje_y);
 
     if(w_x > w_y) {
         rect1 = id_min_lado_mayor_x;
