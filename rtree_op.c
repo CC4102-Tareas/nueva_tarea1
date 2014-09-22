@@ -134,7 +134,13 @@ void ajustar_split(Dos_nodos dn)
                     dn.n2.nodo_padre = dn_.n1.nodo_id;
                     dn.n2.pos_mbr_padre = i;
                     insertar_nodo(dn.n2);
-                } else {
+                } 
+                else if (dn_.n1.mbr[i].nodo_hijo == dn.n1.nodo_id) {
+                    dn.n1.nodo_padre = dn_.n1.nodo_id;
+                    dn.n1.pos_mbr_padre = i;
+                    actualizar_nodo(dn.n1);
+					}
+					else {
                     aux = leer_nodo(dn_.n1.mbr[i].nodo_hijo);
          			aux.nodo_padre = dn_.n1.nodo_id;
 	        		aux.pos_mbr_padre = i;
@@ -147,7 +153,13 @@ void ajustar_split(Dos_nodos dn)
                     dn.n2.nodo_padre = dn_.n2.nodo_id;
                     dn.n2.pos_mbr_padre = i;
                     insertar_nodo(dn.n2);
-                } else {
+                }
+                else if (dn_.n2.mbr[i].nodo_hijo == dn.n1.nodo_id) {
+                    dn.n1.nodo_padre = dn_.n2.nodo_id;
+                    dn.n1.pos_mbr_padre = i;
+                    actualizar_nodo(dn.n1);
+					}
+					else {
        				aux = leer_nodo(dn_.n2.mbr[i].nodo_hijo);
    	    			aux.nodo_padre = dn_.n2.nodo_id;
     	    		aux.pos_mbr_padre = i;
@@ -156,7 +168,7 @@ void ajustar_split(Dos_nodos dn)
             }
 			
             // se actualiza el nodo esplitiado
-            actualizar_nodo(dn.n1);
+            //actualizar_nodo(dn.n1);
 
             ajustar_split(dn_);
 		}
