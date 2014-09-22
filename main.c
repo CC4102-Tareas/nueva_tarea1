@@ -15,7 +15,7 @@
 */
 
 int main (int arc, char **argv) 
-{	int i;
+{	int i,j;
 
 	init_rtree();
 	insertar(obtener_raiz(),make_rect(1.0,3.0,2.0,2.5));
@@ -43,6 +43,13 @@ int main (int arc, char **argv)
 	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
 
 	imprimir_arbol(obtener_raiz(), -1, 0);
+
+    Dynamic_array resultado = buscar(obtener_raiz(), make_rect(9.0,9.5,5.0,10.0));
+    printf("Buscar -> [%f,%f]x[%f,%f]\n", 9.0,9.5,5.0,10.0);
+    for(j=0;j<resultado.used;j++) {
+        printf("   Encontrado ->[%f,%f]X[%f,%f]\n", resultado.array[j].x1, resultado.array[j].x2, 
+                                                    resultado.array[j].y1, resultado.array[j].y2);
+    }
 
     //for(i=0;i<=rtree_ultimo;i++)
     //    imprimir_nodo(leer_nodo(i));

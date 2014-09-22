@@ -6,7 +6,7 @@
 typedef struct {
   Rectangulo *array; // puntero a un arreglo de rectangulos.
   size_t used;       // cantidad de elementos presentes.
-  size_t size;       // tamaño inicial.
+  size_t size;       // tamaño.
 } Dynamic_array;
 
 void initArray(Dynamic_array *a, size_t initialSize) {

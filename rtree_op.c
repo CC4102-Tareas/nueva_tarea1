@@ -232,12 +232,11 @@ void insertar(Nodo nodo, Rectangulo rect)
 /**
     Entrega un arreglo de rectángulos que intersectan con el rectágulo dado.
 */
-Dynamic_array* buscar(Nodo nodo, Rectangulo rect)
+Dynamic_array buscar(Nodo nodo, Rectangulo rect)
 {
 	int i, j;
-	Dynamic_array * rects;
-	initArray(rects, 1);
-
+	Dynamic_array rects;
+	initArray(&rects, 1);
 	/*
 	* Si nodo es hoja, incorporo a mi arreglo los rectangulos que intersectan
 	* con mi input
@@ -246,7 +245,7 @@ Dynamic_array* buscar(Nodo nodo, Rectangulo rect)
 	{
 		for(i=0;i<=nodo.ultimo;i++)
 			if (interseccion(rect, nodo.mbr[i].rect))
-				insertArray(rects, nodo.mbr[i].rect);
+				insertArray(&rects, nodo.mbr[i].rect);
 	}
 	/*
 	* Si nodo es interno, hago busqueda en profundidad solo por los nodos que
@@ -259,16 +258,16 @@ Dynamic_array* buscar(Nodo nodo, Rectangulo rect)
 			if (interseccion(rect, nodo.mbr[i].rect))
 			{
 				Nodo nodo_hijo = leer_nodo(nodo.mbr[i].nodo_hijo);
-				Dynamic_array *rects_hijos = buscar(nodo_hijo, rect);
+				Dynamic_array rects_hijos = buscar(nodo_hijo, rect);
 
 				// se insertan en el grupo general
-				for(j=0;j<rects_hijos->used;j++)
+				for(j=0;j<rects_hijos.used;j++)
 				{
-					insertArray(rects, rects_hijos->array[j]);
+					insertArray(&rects, rects_hijos.array[j]);
 				}
 				
 				// se libera la memoria.
-				freeArray(rects_hijos);
+				freeArray(&rects_hijos);
 			}
 		}
 	}	
