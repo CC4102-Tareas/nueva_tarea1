@@ -38,7 +38,7 @@ Nodo encontrar_hoja(Nodo nodo, Rectangulo rect) {
 				imin = i;
 			}
 		}
-		// TODO: actualizar en disco
+		// actualizar en disco
         nodo.mbr[imin].rect = calcular_mbr_minimo(nodo.mbr[imin].rect, rect);
         actualizar_nodo(nodo);
         // buscar en el hijo encontrado segun criterio de arriba.
@@ -54,11 +54,24 @@ void ajustar_split(Dos_nodos dn)
 {	 
     Nodo aux, p;
     int i;    // iterador
-	
-    printf("Ajusto árbol porque se splitteó el nodo %d.\n",dn.n1.nodo_id);
-	printf("|-> nodo_padre: %d\n",dn.n1.nodo_padre);
-	printf("|-> posicion_mbr_padre: %d\n",dn.n1.pos_mbr_padre);
-	printf("|-> ultimo: %d\n",(dn.n1.ultimo + dn.n2.ultimo -1));
+    
+    if (DEBUG_INSERTAR) {
+        printf("Ajusto árbol porque se splitteó el nodo %d.\n",dn.n1.nodo_id);
+    	printf("|-> nodo_padre: %d\n",dn.n1.nodo_padre);
+	    printf("|-> posicion_mbr_padre: %d\n",dn.n1.pos_mbr_padre);
+    	printf("|-> ultimo: %d\n",(dn.n1.ultimo + dn.n2.ultimo -1));
+    
+	    printf("Resultado de split\n");
+        for(i=0;i<=dn.n1.ultimo;i++) {            
+            printf("n1: [%f,%f]x[%f,%f] | nodo_hijo: %d\n",
+                        dn.n1.mbr[i].rect.x1, dn.n1.mbr[i].rect.x2, dn.n1.mbr[i].rect.y1, dn.n1.mbr[i].rect.y2, dn.n1.mbr[i].nodo_hijo);
+        }
+        printf("============\n");
+        for(i=0;i<=dn.n2.ultimo;i++) {
+            printf("n2: [%f,%f]x[%f,%f] | nodo_hijo: %d\n",
+                        dn.n2.mbr[i].rect.x1, dn.n2.mbr[i].rect.x2, dn.n2.mbr[i].rect.y1, dn.n2.mbr[i].rect.y2, dn.n2.mbr[i].nodo_hijo);
+        }
+    }
 	// si es raiz
 	if (dn.n1.nodo_padre == -1){
 		((DEBUG_INSERTAR) ? printf("El nodo %d espliteado es una raíz por lo que debo crear un nodo adicional.\n", dn.n1.nodo_id):0);
@@ -100,7 +113,6 @@ void ajustar_split(Dos_nodos dn)
 	// si no es raíz
 	else
 	{		
-        printf("en ajustar_split entro al else\n");
 		p = leer_nodo(dn.n1.nodo_padre);
 
 		// si está lleno
@@ -115,7 +127,7 @@ void ajustar_split(Dos_nodos dn)
 			Dos_nodos dn_ = quadratic_split(p, make_mbr_2(dn.mbr2, dn.n2.nodo_id));
             
             // actualizamos las posiciones dentro del mbr del padre en los nodos hijos.
-            // En este punto los nodos hijos siempre existe.
+            // En este punto los nodos hijos siempre existen.
 		    for(i=0; i <= dn_.n1.ultimo; i++) {
                 if (dn_.n1.mbr[i].nodo_hijo == dn.n2.nodo_id) {
                     dn.n2.nodo_padre = dn_.n1.nodo_id;

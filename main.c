@@ -80,10 +80,10 @@ int main (int arc, char **argv)
 	insertar(obtener_raiz(),make_rect(7.0,8.0,10.0,11.0));
 	insertar(obtener_raiz(),make_rect(6.0,7.0,4.0,10.0));
 	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
-	imprimir_arbol(obtener_raiz(), -1, 0);
 	insertar(obtener_raiz(),make_rect(9.1,9.5,5.0,10.0));
 	insertar(obtener_raiz(),make_rect(9.2,9.6,5.0,10.0));
 	insertar(obtener_raiz(),make_rect(9.3,9.7,5.0,10.0));
+	imprimir_arbol(obtener_raiz(), -1, 0);
 	insertar(obtener_raiz(),make_rect(9.4,9.8,5.0,10.0));
 	/*insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
 	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
