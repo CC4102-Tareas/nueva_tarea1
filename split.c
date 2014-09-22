@@ -73,8 +73,8 @@ Dos_nodos quadratic_split(Nodo nodo, MBR mbr)
     for(i=0;i<(2*T+1);i++) {
         // se saltan los escogidos al inicio.
         if (i != rect1 && i != rect2) {
-            // si alguno completó su minimo     
-            if (nodo1.ultimo == T+1) {
+            // si alguno completó su minimo. El indice comienza en 0, sino sería T+1
+            if (nodo1.ultimo == T) {
                 nodo2.ultimo++;
                 if (i==2*T) { 
                     nodo2.mbr[nodo2.ultimo] = mbr;
@@ -84,7 +84,7 @@ Dos_nodos quadratic_split(Nodo nodo, MBR mbr)
                     mbr2 = calcular_mbr_minimo(mbr2, nodo.mbr[i].rect);
                 }
                 continue;
-            } else if (nodo2.ultimo == T+1) {
+            } else if (nodo2.ultimo == T) {
                 nodo1.ultimo++;
                 if (i==2*T) {           
                     nodo1.mbr[nodo1.ultimo] = mbr;
@@ -160,7 +160,7 @@ Dos_nodos linear_split(Nodo nodo, MBR mbr) {
     // mbr que contiene a cada uno de los nodos nuevos
     Rectangulo mbr1, mbr2;
 
-    for(i=1;i<=(2*T+1);i++) {
+    for(i=1;i<(2*T+1);i++) {
         // ocupar rect
         if (i==2*T) {
             // buscamos el lado mayor mínimo en el eje X.
@@ -274,8 +274,8 @@ Dos_nodos linear_split(Nodo nodo, MBR mbr) {
     for(i=0;i<(2*T+1);i++) {
         // se saltan los escogidos al inicio.
         if (i != rect1 && i != rect2) {
-            // si alguno completó su minimo
-            if (nodo1.ultimo == T+1) {
+            // si alguno completó su minimo. Se iguala a T pq el índice comienza en 0. sino sería T+1
+            if (nodo1.ultimo == T) {
                 nodo2.ultimo++;
                 if (i==2*T) {           
                     nodo2.mbr[nodo2.ultimo] = mbr;
@@ -285,7 +285,7 @@ Dos_nodos linear_split(Nodo nodo, MBR mbr) {
                     mbr2 = calcular_mbr_minimo(mbr2, nodo.mbr[i].rect);
                 }
                 continue;
-            } else if (nodo2.ultimo == T+1) {
+            } else if (nodo2.ultimo == T) {
                 nodo1.ultimo++;
                 if (i==2*T) {           
                     nodo1.mbr[nodo1.ultimo] = mbr;

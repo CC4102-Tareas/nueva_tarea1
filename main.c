@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define DEBUG_INSERTAR TRUE
+#define DEBUG_INSERTAR FALSE
 #define DEBUG_DISCO FALSE
 
 #include "estructuras.c"
@@ -75,7 +75,7 @@ int main (int arc, char **argv)
 	insertar(obtener_raiz(),make_rect(2.0,3.0,1.0,2.0));
 	insertar(obtener_raiz(),make_rect(4.0,5.0,4.0,6.0));
 	insertar(obtener_raiz(),make_rect(4.0,6.0,3.0,6.0));
-/*
+
 	insertar(obtener_raiz(),make_rect(6.0,7.0,9.0,10.0));
 	insertar(obtener_raiz(),make_rect(7.0,8.0,10.0,11.0));
 	insertar(obtener_raiz(),make_rect(6.0,7.0,4.0,10.0));
@@ -93,7 +93,7 @@ int main (int arc, char **argv)
 	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
 	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
 	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
-*/
+
 	imprimir_arbol(obtener_raiz(), -1, 0);
 
     //for(i=0;i<=rtree_ultimo;i++)
