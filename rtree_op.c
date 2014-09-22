@@ -154,6 +154,9 @@ void ajustar_split(Dos_nodos dn)
                 }
             }
 			
+            // se actualiza el nodo esplitiado
+            actualizar_nodo(dn.n1);
+
             ajustar_split(dn_);
 		}
 		// si hay espacio

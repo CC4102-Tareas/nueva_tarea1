@@ -92,7 +92,14 @@ int main (int arc, char **argv)
 */
 	imprimir_arbol(obtener_raiz(), -1, 0);
 
-//	imprimir_nodo(obtener_raiz());
+    imprimir_nodo(leer_nodo(7));
+    imprimir_nodo(leer_nodo(2));
+    imprimir_nodo(leer_nodo(6));
+    imprimir_nodo(leer_nodo(0));
+    imprimir_nodo(leer_nodo(1));
+    imprimir_nodo(leer_nodo(5));
+    imprimir_nodo(leer_nodo(3));
+    imprimir_nodo(leer_nodo(4));
 	//printf("--------------------------\n");
 	//printf("--------------------------\n");
 
