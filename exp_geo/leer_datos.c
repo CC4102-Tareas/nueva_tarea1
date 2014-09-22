@@ -25,6 +25,6 @@ int main (int arc, char **argv) {
         SHPDestroyObject(obj);
     }
 
-    HPClose(h);
+    SHPClose(h);
     return 0; // ok
 }
