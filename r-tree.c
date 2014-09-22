@@ -2,6 +2,8 @@
 	Estructura que permite persistir un R-tree. 
 */
 
+// activar para casos de debug.
+#define DEBUG_DISCO FALSE
 #define NAME_FILE "r-tree.bin"
 
 int lecturas_disco = 0;

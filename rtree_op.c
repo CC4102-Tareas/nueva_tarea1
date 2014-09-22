@@ -1,3 +1,10 @@
+// activar en casos de debug
+#define DEBUG_INSERTAR FALSE
+
+Nodo obtener_raiz() {
+    return leer_nodo(rtree_root);
+}
+
 /**
     Busca un nodo hoja según el rectángulo rect. 
     Ocupado en @insertar(Nodo, Rectangulo)

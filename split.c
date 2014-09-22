@@ -1,3 +1,6 @@
+// activar para casos de debug
+#define DEBUG_LINEAR_SPLIT FALSE
+
 /**
     Realiza la división de un nodo en dos en tiempo cuadratico.
 */
