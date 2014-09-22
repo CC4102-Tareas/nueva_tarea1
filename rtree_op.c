@@ -38,12 +38,9 @@ Nodo encontrar_hoja(Nodo nodo, Rectangulo rect) {
 				imin = i;
 			}
 		}
-		// TODO: actualizar en disco
+		// actualizar en disco
         nodo.mbr[imin].rect = calcular_mbr_minimo(nodo.mbr[imin].rect, rect);
         actualizar_nodo(nodo);
-// printf("imin: %d\n", imin);       
-// printf("MBR.nodo_hijo: %d\n", nodo.mbr[imin].nodo_hijo);       
-// printf("MBR.rect: %f %f %f %f\n", nodo.mbr[imin].rect.x1,nodo.mbr[imin].rect.x2, nodo.mbr[imin].rect.y1, nodo.mbr[imin].rect.y2);       
         // buscar en el hijo encontrado segun criterio de arriba.
 		nodo = leer_nodo(nodo.mbr[imin].nodo_hijo);
 
@@ -53,61 +50,31 @@ Nodo encontrar_hoja(Nodo nodo, Rectangulo rect) {
 	}
 }
 
-Dos_nodos split(Nodo nodo, MBR m)
-{
-	int i;
-	Dos_nodos dn;
-	
-	// Nodo 1
-	dn.n1.nodo_id = nodo.nodo_id;
-	dn.n1.ultimo = T;
-	dn.n1.pos_mbr_padre = nodo.pos_mbr_padre;
-	dn.n1.nodo_padre = nodo.nodo_padre;
-
-	// Nodo 2
-	rtree_ultimo++;
-	dn.n2.nodo_id = rtree_ultimo;
-	dn.n2.ultimo = T-1;
-	dn.n2.nodo_padre = nodo.nodo_padre;
-
-	Rectangulo mbr1;
-	Rectangulo mbr2;
-	mbr1 = nodo.mbr[0].rect;
-	mbr2 = nodo.mbr[T].rect;
-	dn.n1.mbr[0] = nodo.mbr[0];
-	dn.n2.mbr[0] = nodo.mbr[T];
-
-	// repartición
-	for (i = 1; i < T; i++)
-	{	
-		dn.n1.mbr[i] = nodo.mbr[i];
-		mbr1 = calcular_mbr_minimo(mbr1, nodo.mbr[i].rect);
-		dn.n2.mbr[i] = nodo.mbr[T+i];
-		mbr2 = calcular_mbr_minimo(mbr2, nodo.mbr[T+i].rect);
-
-	}		
-
-	dn.n1.mbr[i] = m;
-	mbr1 = calcular_mbr_minimo(mbr1, m.rect);
-
-	dn.mbr1 = mbr1;
-	dn.mbr2 = mbr2;
-
-	return dn;
-}
-
 void ajustar_split(Dos_nodos dn)
 {	 
     Nodo aux, p;
     int i;    // iterador
-	
-    printf("Ajusto árbol porque se splitteó el nodo%d\n",dn.n1.nodo_id);
-	printf("Que tiene nodo padre%d\n",dn.n1.nodo_padre);
-	printf("Que tiene posicion %d padre\n",dn.n1.pos_mbr_padre);
-	printf("Y cuyo ultimo es %d \n",dn.n1.ultimo);
+    
+    if (DEBUG_INSERTAR) {
+        printf("Ajusto árbol porque se splitteó el nodo %d.\n",dn.n1.nodo_id);
+    	printf("|-> nodo_padre: %d\n",dn.n1.nodo_padre);
+	    printf("|-> posicion_mbr_padre: %d\n",dn.n1.pos_mbr_padre);
+    	printf("|-> ultimo: %d\n",(dn.n1.ultimo + dn.n2.ultimo -1));
+    
+	    printf("Resultado de split\n");
+        for(i=0;i<=dn.n1.ultimo;i++) {            
+            printf("n1: [%f,%f]x[%f,%f] | nodo_hijo: %d\n",
+                        dn.n1.mbr[i].rect.x1, dn.n1.mbr[i].rect.x2, dn.n1.mbr[i].rect.y1, dn.n1.mbr[i].rect.y2, dn.n1.mbr[i].nodo_hijo);
+        }
+        printf("============\n");
+        for(i=0;i<=dn.n2.ultimo;i++) {
+            printf("n2: [%f,%f]x[%f,%f] | nodo_hijo: %d\n",
+                        dn.n2.mbr[i].rect.x1, dn.n2.mbr[i].rect.x2, dn.n2.mbr[i].rect.y1, dn.n2.mbr[i].rect.y2, dn.n2.mbr[i].nodo_hijo);
+        }
+    }
 	// si es raiz
 	if (dn.n1.nodo_padre == -1){
-    	printf("en ajustar_split entro al if\n");
+		((DEBUG_INSERTAR) ? printf("El nodo %d espliteado es una raíz por lo que debo crear un nodo adicional.\n", dn.n1.nodo_id):0);
         // ===================================================================
 		// TODO: crear un nuevo nodo NN y una nueva raíz NR; pasos:
 		// repartir rectángulos entre nuevo nodo NN y antigua raíz AR (split)
@@ -142,33 +109,10 @@ void ajustar_split(Dos_nodos dn)
 		aux.mbr[0] = make_mbr_2(dn.mbr1, dn.n1.nodo_id);
 		aux.mbr[1] = make_mbr_2(dn.mbr2, dn.n2.nodo_id);
 		insertar_nodo(aux);		
-            
-        // actualizamos las posiciones dentro del mbr del padre en los nodos hijos.
-	    if (dn.n1.mbr[0].nodo_hijo !=-1) 
-		{
-    	    for(i=0; i <= dn.n1.ultimo; i++) {
-	    		aux = leer_nodo(dn.n1.mbr[i].nodo_hijo);
-	        	aux.nodo_padre = dn.n1.nodo_id;
-			    aux.pos_mbr_padre = i;
-			    actualizar_nodo(aux);
-            }
-		}
-
-    	if (dn.n2.mbr[0].nodo_hijo !=-1) 
-		{
-		    for(i=0; i <= dn.n2.ultimo; i++) {
-   				aux = leer_nodo(dn.n2.mbr[i].nodo_hijo);
-    			aux.nodo_padre = dn.n2.nodo_id;
-	    		aux.pos_mbr_padre = i;
-		    	actualizar_nodo(aux);
-            }   
-		}
-
 	}
 	// si no es raíz
 	else
 	{		
-        printf("en ajustar_split entro al else\n");
 		p = leer_nodo(dn.n1.nodo_padre);
 
 		// si está lleno
@@ -178,47 +122,68 @@ void ajustar_split(Dos_nodos dn)
 
             // actualizar mbr del nodo spliteado
 			p.mbr[dn.n1.pos_mbr_padre].rect = dn.mbr1;
-            // volver a hacer split sobre el nodo padre insertanto en nuevo nodo creado
-			Dos_nodos dn_ = split(p, make_mbr_2(dn.mbr2,dn.n2.nodo_id));
+            // volver a hacer split sobre el nodo padre insertando el nuevo nodo creado
+            // OJO: que el split no asigna nodo_padre ni pos_mbr_padre a dn.n2 porque no sabe quien será.
+			Dos_nodos dn_ = linear_split(p, make_mbr_2(dn.mbr2, dn.n2.nodo_id));
             
             // actualizamos las posiciones dentro del mbr del padre en los nodos hijos.
-			if (dn_.n1.mbr[0].nodo_hijo !=-1) 
-			{
-			    for(i=0; i <= dn_.n1.ultimo; i++) {
+            // En este punto los nodos hijos siempre existen.
+		    for(i=0; i <= dn_.n1.ultimo; i++) {
+                if (dn_.n1.mbr[i].nodo_hijo == dn.n2.nodo_id) {
+                    dn.n2.nodo_padre = dn_.n1.nodo_id;
+                    dn.n2.pos_mbr_padre = i;
+                    insertar_nodo(dn.n2);
+                } 
+                else if (dn_.n1.mbr[i].nodo_hijo == dn.n1.nodo_id) {
+                    dn.n1.nodo_padre = dn_.n1.nodo_id;
+                    dn.n1.pos_mbr_padre = i;
+                    actualizar_nodo(dn.n1);
+					}
+					else {
                     aux = leer_nodo(dn_.n1.mbr[i].nodo_hijo);
-	    			aux.nodo_padre = dn_.n1.nodo_id;
-		    		aux.pos_mbr_padre = i;
-			    	actualizar_nodo(aux);
+         			aux.nodo_padre = dn_.n1.nodo_id;
+	        		aux.pos_mbr_padre = i;
+		        	actualizar_nodo(aux);
                 }
-			}
+            }
 
-			if (dn_.n2.mbr[i].nodo_hijo !=-1) 
-			{
-			    for(i=0; i <= dn_.n2.ultimo; i++) {
-    				aux = leer_nodo(dn_.n2.mbr[i].nodo_hijo);
-	    			aux.nodo_padre = dn_.n2.nodo_id;
-		    		aux.pos_mbr_padre = i;
-				    actualizar_nodo(aux);
+		    for(i=0; i <= dn_.n2.ultimo; i++) {
+                if (dn_.n2.mbr[i].nodo_hijo == dn.n2.nodo_id) {
+                    dn.n2.nodo_padre = dn_.n2.nodo_id;
+                    dn.n2.pos_mbr_padre = i;
+                    insertar_nodo(dn.n2);
                 }
-			}
+                else if (dn_.n2.mbr[i].nodo_hijo == dn.n1.nodo_id) {
+                    dn.n1.nodo_padre = dn_.n2.nodo_id;
+                    dn.n1.pos_mbr_padre = i;
+                    actualizar_nodo(dn.n1);
+					}
+					else {
+       				aux = leer_nodo(dn_.n2.mbr[i].nodo_hijo);
+   	    			aux.nodo_padre = dn_.n2.nodo_id;
+    	    		aux.pos_mbr_padre = i;
+	    		    actualizar_nodo(aux);
+                }
+            }
+			
+            // se actualiza el nodo esplitiado
+            //actualizar_nodo(dn.n1);
 
-			ajustar_split(dn_);
+            ajustar_split(dn_);
 		}
 		// si hay espacio
 		else
 		{	
 		    ((DEBUG_INSERTAR) ? printf("El nodo %d spliteado tiene un nodo padre con espacio.\n", dn.n1.nodo_id):0);
-
-			p.ultimo++;
+			
+            p.ultimo++;
 			p.mbr[p.ultimo] = make_mbr_2(dn.mbr2, dn.n2.nodo_id);
+            dn.n2.nodo_padre = p.nodo_id;
 			dn.n2.pos_mbr_padre = p.ultimo;
 			p.mbr[dn.n1.pos_mbr_padre].rect = dn.mbr1;
 			actualizar_nodo(p);
 			actualizar_nodo(dn.n1);
 			insertar_nodo(dn.n2);
-            // si no es la raíz, ajustar los mbr de los ancestros.
-			//if (p.nodo_padre != -1)
-				//ajustar_mbr_padres(p.nodo_padre, p.pos_mbr_padre, calcular_mbr_minimo(dn.mbr1, dn.mbr2));
 		}
 	}
 }
@@ -247,8 +212,8 @@ void insertar(Nodo nodo, Rectangulo rect)
 	else
 	{	
 		((DEBUG_INSERTAR) ? printf("Nodo %d está lleno. Requiere hacer split.\n", n.nodo_id):0);
-
-		Dos_nodos dn = split(n, make_mbr_2(rect,-1));
+        
+		Dos_nodos dn = linear_split(n, make_mbr_2(rect,-1));
 		ajustar_split(dn);
 	}
 }

@@ -4,9 +4,15 @@
 Dos_nodos quadratic_split(Nodo nodo, MBR mbr)
 {
 	int i, j;           // iteradores
-    float area_max = 0; // almacena el incremento de área máximo.
+    float area_max;     // almacena el incremento de área máximo.
     float area_tmp;     // area calculada en cada iteración
     int rect1, rect2;   // indices del mbr que forman el incremento máximo.
+    
+    // ajustamos valores por default al primer par de rectángulos.
+    // esto siempre es valido cuando T >= 1.
+    area_max = incremento_area_split(nodo.mbr[0].rect, nodo.mbr[1].rect);
+    rect1 = 0;
+    rect2 = 1;
 
 	// calculamos el área producida por cada par
     // esto es (N*(N-1))/2 con N=2*T+1
@@ -18,7 +24,7 @@ Dos_nodos quadratic_split(Nodo nodo, MBR mbr)
             } else {
                 area_tmp = incremento_area_split(nodo.mbr[i].rect, nodo.mbr[j].rect);
             }
-
+            
             // se guardan los rectangulos que producen el incremento máximo.
             if (area_tmp > area_max) {
                 area_max = area_tmp;
@@ -27,7 +33,7 @@ Dos_nodos quadratic_split(Nodo nodo, MBR mbr)
             }
         }
 	}
-   
+    
     // aquí ya conocemos los rectangulos que generan el incremento de área máximo.
     // están en los indices rect1 y rect2
 
@@ -99,7 +105,6 @@ Dos_nodos quadratic_split(Nodo nodo, MBR mbr)
                 area_inc2 = incremento_area_split(mbr2, nodo.mbr[i].rect);
             }
         
-            //TODO: verificar si falta una condición aquí.
             if (area_inc1 < area_inc2) {
                 nodo1.ultimo++;
                 if (i==2*T) {           
@@ -245,7 +250,8 @@ Dos_nodos linear_split(Nodo nodo, MBR mbr) {
         nodo1.mbr[0] = nodo.mbr[rect1];
     }
 
-    nodo2.nodo_id = -1;
+    rtree_ultimo++;
+    nodo2.nodo_id = rtree_ultimo;
     //nodo2.nodo_padre = -> se asigna después
     //nodo2.pos_mbr_padre = -> se asigna después
     nodo2.ultimo = 0;
