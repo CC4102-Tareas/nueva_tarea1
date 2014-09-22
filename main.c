@@ -3,6 +3,7 @@
 
 #define DEBUG_INSERTAR FALSE
 #define DEBUG_DISCO FALSE
+#define DEBUG_LINEAR_SPLIT FALSE
 
 #include "estructuras.c"
 #include "dynamic_array.c"

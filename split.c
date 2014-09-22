@@ -143,15 +143,16 @@ Dos_nodos quadratic_split(Nodo nodo, MBR mbr)
 Dos_nodos linear_split(Nodo nodo, MBR mbr) {
 	
     int i; // itearador
-    // se asume que el primer indice es el de menor y mayor distancia
-    // en ambas dimensiones.
+    // se asume el primer mbr del nodo como el que tiene 
+    // todas las características.
     int id_min_lado_mayor_x=0, id_max_lado_menor_x=0;
     int id_min_lado_mayor_y=0, id_max_lado_menor_y=0;
     
-    float max_eje_x, max_eje_y;
+    // se usan valores por default del mbr 0.
+    float max_eje_x = nodo.mbr[0].rect.x2, max_eje_y = nodo.mbr[0].rect.y2;
 
-    float min_lado_mayor_x, max_lado_menor_x;
-    float min_lado_mayor_y, max_lado_menor_y;
+    float min_lado_mayor_x=nodo.mbr[0].rect.x2, max_lado_menor_x=nodo.mbr[0].rect.x1;
+    float min_lado_mayor_y=nodo.mbr[0].rect.y2, max_lado_menor_y=nodo.mbr[0].rect.y1;
 
     float w_x, w_y;
 
@@ -224,8 +225,8 @@ Dos_nodos linear_split(Nodo nodo, MBR mbr) {
     }
 
     // aquí tenemos todos los rectángulos. Calculamos w_x y w_y
-    w_x = (max_lado_menor_x - min_lado_mayor_x)/max_eje_x;
-    w_y = (max_lado_menor_y - min_lado_mayor_y)/max_eje_y;
+    w_x = abs(max_lado_menor_x - min_lado_mayor_x)/max_eje_x;
+    w_y = abs(max_lado_menor_y - min_lado_mayor_y)/max_eje_y;
 
     if(w_x > w_y) {
         rect1 = id_min_lado_mayor_x;
@@ -234,7 +235,22 @@ Dos_nodos linear_split(Nodo nodo, MBR mbr) {
         rect1 = id_min_lado_mayor_y;
         rect2 = id_max_lado_menor_y;
     }
+    // se hace cuando todos todos los rectangulos son iguales. En ese caso hay que hacerlos
+    // distintos
+    if(rect1 == rect2) {
+        rect2++;
+    }
 
+    if(DEBUG_LINEAR_SPLIT) {
+        printf("max_lado_menor_x: %f | min_lado_mayor_x: %f\n", max_lado_menor_x, min_lado_mayor_x);
+        printf("max_lado_menor_y: %f | min_lado_mayor_y: %f\n", max_lado_menor_y, min_lado_mayor_y);
+        printf("max_eje_x: %f | max_eje_y: %f\n", max_eje_x, max_eje_y);
+        printf("w_x: %f | w_y: %f\n", w_x, w_y);
+    
+        printf("id_min_lado_mayor_x: %d | id_max_lado_menor_x: %d\n", id_min_lado_mayor_x, id_max_lado_menor_x);
+        printf("id_min_lado_mayor_y: %d | id_max_lado_menor_y: %d\n", id_min_lado_mayor_y, id_max_lado_menor_y);
+        printf("rect1: %d |rect2: %d\n", rect1, rect2);
+    }
     // aquí ya conocemos los rectangulos que generan el incremento de área máximo.
     // están en los indices rect1 y rect2
 
@@ -262,7 +278,6 @@ Dos_nodos linear_split(Nodo nodo, MBR mbr) {
     }
     
     // mantener un rectangulo que representa el mbr que va en el padre para cada nodo.
-
     // en un principio será = al rectangulo inicial.
     mbr1 = nodo1.mbr[nodo1.ultimo].rect;
     mbr2 = nodo2.mbr[nodo2.ultimo].rect;
