@@ -31,7 +31,7 @@ int interseccion (Rectangulo r1, Rectangulo r2)
 */
 float area(Rectangulo rect) 
 {
-	float ancho = rect.x2-rect.x1;
+	float ancho = rect.x2 - rect.x1;
 	float alto = rect.y2 - rect.y1;
 	return ancho*alto;
 }
@@ -60,5 +60,5 @@ float incremento_area(Rectangulo r1, Rectangulo r2) {
 
 float incremento_area_split(Rectangulo r1, Rectangulo r2) {
 	Rectangulo mbrect = calcular_mbr_minimo(r1,r2);
-	return area(mbrect) - area(r1) - area(r2);
+	return area(mbrect) - (area(r1) + area(r2));
 }

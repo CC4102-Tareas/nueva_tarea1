@@ -124,7 +124,7 @@ void ajustar_split(Dos_nodos dn)
 			p.mbr[dn.n1.pos_mbr_padre].rect = dn.mbr1;
             // volver a hacer split sobre el nodo padre insertando el nuevo nodo creado
             // OJO: que el split no asigna nodo_padre ni pos_mbr_padre a dn.n2 porque no sabe quien será.
-			Dos_nodos dn_ = quadratic_split(p, make_mbr_2(dn.mbr2, dn.n2.nodo_id));
+			Dos_nodos dn_ = linear_split(p, make_mbr_2(dn.mbr2, dn.n2.nodo_id));
             
             // actualizamos las posiciones dentro del mbr del padre en los nodos hijos.
             // En este punto los nodos hijos siempre existen.
@@ -200,8 +200,8 @@ void insertar(Nodo nodo, Rectangulo rect)
 	else
 	{	
 		((DEBUG_INSERTAR) ? printf("Nodo %d está lleno. Requiere hacer split.\n", n.nodo_id):0);
-
-		Dos_nodos dn = quadratic_split(n, make_mbr_2(rect,-1));
+        
+		Dos_nodos dn = linear_split(n, make_mbr_2(rect,-1));
 		ajustar_split(dn);
 	}
 }

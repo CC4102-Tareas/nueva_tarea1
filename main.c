@@ -56,8 +56,8 @@ void imprimir_arbol(Nodo n, int pos_mbr, int space) {
     for(i=0;i<=n.ultimo;i++) {
         if (n.mbr[i].nodo_hijo != -1) {
             printf("===============================================\n");
-            //printf("[%f,%f]x[%f,%f] | nodo_hijo: %d\n",
-            //n.mbr[i].rect.x1, n.mbr[i].rect.x2, n.mbr[i].rect.y1, n.mbr[i].rect.y2, n.mbr[i].nodo_hijo);
+            printf("[%f,%f]x[%f,%f] | nodo_hijo: %d\n",
+            n.mbr[i].rect.x1, n.mbr[i].rect.x2, n.mbr[i].rect.y1, n.mbr[i].rect.y2, n.mbr[i].nodo_hijo);
             imprimir_arbol(leer_nodo(n.mbr[i].nodo_hijo), i, space);
         } else {
             printf("[%f,%f]x[%f,%f] | nodo_hijo: %d\n",
@@ -75,31 +75,29 @@ int main (int arc, char **argv)
 	insertar(obtener_raiz(),make_rect(2.0,3.0,1.0,2.0));
 	insertar(obtener_raiz(),make_rect(4.0,5.0,4.0,6.0));
 	insertar(obtener_raiz(),make_rect(4.0,6.0,3.0,6.0));
-
+/*
 	insertar(obtener_raiz(),make_rect(6.0,7.0,9.0,10.0));
 	insertar(obtener_raiz(),make_rect(7.0,8.0,10.0,11.0));
 	insertar(obtener_raiz(),make_rect(6.0,7.0,4.0,10.0));
 	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
 	insertar(obtener_raiz(),make_rect(9.1,9.5,5.0,10.0));
-	insertar(obtener_raiz(),make_rect(9.2,9.6,5.0,10.0));
+	
+    insertar(obtener_raiz(),make_rect(9.2,9.6,5.0,10.0));
 	insertar(obtener_raiz(),make_rect(9.3,9.7,5.0,10.0));
-	imprimir_arbol(obtener_raiz(), -1, 0);
 	insertar(obtener_raiz(),make_rect(9.4,9.8,5.0,10.0));
-	/*insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
+	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
 	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
 	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
 	insertar(obtener_raiz(),make_rect(9.0,9.5,5.0,10.0));
 */
 	imprimir_arbol(obtener_raiz(), -1, 0);
 
-    imprimir_nodo(leer_nodo(7));
-    imprimir_nodo(leer_nodo(2));
-    imprimir_nodo(leer_nodo(6));
-    imprimir_nodo(leer_nodo(0));
-    imprimir_nodo(leer_nodo(1));
-    imprimir_nodo(leer_nodo(5));
-    imprimir_nodo(leer_nodo(3));
-    imprimir_nodo(leer_nodo(4));
+    //for(i=0;i<=rtree_ultimo;i++)
+    //    imprimir_nodo(leer_nodo(i));
 	//printf("--------------------------\n");
 	//printf("--------------------------\n");
 
