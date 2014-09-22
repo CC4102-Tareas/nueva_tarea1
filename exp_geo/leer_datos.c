@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include "./shapelib-1.2.10/shapefil.h"
 
 #define RUTA_ARCHIVOS "./Data/tl_2011_us_primaryroads.shp"
@@ -20,6 +21,9 @@ int main (int arc, char **argv) {
         obj = SHPReadObject(h, i);
 
         printf("[%f,%f]X[%f,%f]\n", obj->dfXMin, obj->dfXMax, obj->dfYMin, obj->dfYMax);
+        
+        //construir arbol
+        
 
         // se libera la memoria.
         SHPDestroyObject(obj);

@@ -4,6 +4,17 @@
 
 #define NAME_FILE "r-tree.bin"
 
+int lecturas_disco = 0;
+int inserciones_disco = 0;
+int actualizaciones_disco = 0;
+
+/**
+    Indica la cantidad de accesos a disco que se han realizado.
+*/
+int accesos_disco() {
+    return lecturas_disco + inserciones_disco + actualizaciones_disco;
+}
+
 /**
 	Leer nodo de un r-tree
 */
@@ -11,6 +22,8 @@
 Nodo leer_nodo(int numero_nodo) {
 	FILE *fptr;
 	
+    lecturas_disco++;
+
     // se abre el archivo para lectura
 	fptr = fopen(NAME_FILE, "rb");
 
@@ -35,6 +48,8 @@ Nodo leer_nodo(int numero_nodo) {
 */
 void insertar_nodo(Nodo nodo) {
 	FILE *fptr;
+    
+    inserciones_disco++;
 
 	// se abre el archivo para lectura
 	fptr = fopen(NAME_FILE, "a+b");
@@ -50,6 +65,8 @@ void insertar_nodo(Nodo nodo) {
 */
 actualizar_nodo(Nodo nodo) {
 	FILE *fptr;
+
+    actualizaciones_disco++;
 
 	// se abre el archivo para lectura
 	fptr = fopen(NAME_FILE, "r+b");
