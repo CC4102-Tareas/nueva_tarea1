@@ -245,7 +245,8 @@ Dos_nodos linear_split(Nodo nodo, MBR mbr) {
         nodo1.mbr[0] = nodo.mbr[rect1];
     }
 
-    nodo2.nodo_id = -1;
+    rtree_ultimo++;
+    nodo2.nodo_id = rtree_ultimo;
     //nodo2.nodo_padre = -> se asigna después
     //nodo2.pos_mbr_padre = -> se asigna después
     nodo2.ultimo = 0;
