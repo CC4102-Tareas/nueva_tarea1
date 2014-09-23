@@ -42,13 +42,13 @@ for(k=0;k<num_repeticiones;k++) {
     h = SHPOpen(RUTA_ARCHIVOS_RUTAS,"rb");
     SHPGetInfo(h, &pnEntities, &pnShapetype, padfMinBound, padfMaxBound);
     
-    if (DEBUG_EXP_GEO) {
+    //if (DEBUG_EXP_GEO) {
         printf("Archivo de Rutas.\n");
         printf("MinX: %f | Min Y: %f\n",  padfMinBound[0], padfMinBound[1]);
         printf("MaxX: %f | Max Y: %f\n",  padfMaxBound[0], padfMaxBound[1]);
         printf("Cantidad de entidades: %d\n", pnEntities);
         printf("Tipo de figuras: %d\n", pnShapetype);
-    }
+    //}
 
     // se crea el árbol
     init_rtree();
@@ -73,7 +73,7 @@ for(k=0;k<num_repeticiones;k++) {
     // terminamos de medir la construcción del árbol.
     gettimeofday(&despues , NULL);
     dif = time_diff(antes , despues);
-    printf("Construcción de R-tree duró: %f segundos duermiendo.\n", dif);
+    printf("Construcción de R-tree duró: %f segundos.\n", dif);
 
     // se cierra el archivo y se liberan recursos.
     SHPClose(h);
@@ -82,13 +82,13 @@ for(k=0;k<num_repeticiones;k++) {
     h = SHPOpen(RUTA_ARCHIVOS_BLOQUES,"rb");
     SHPGetInfo(h, &pnEntities, &pnShapetype, padfMinBound, padfMaxBound);
 
-    if (DEBUG_EXP_GEO) {
+    //if (DEBUG_EXP_GEO) {
         printf("Archivo de bloques.\n");
         printf("MinX: %f | Min Y: %f\n",  padfMinBound[0], padfMinBound[1]);
         printf("MaxX: %f | Max Y: %f\n",  padfMaxBound[0], padfMaxBound[1]);
         printf("Cantidad de entidades: %d\n", pnEntities);
         printf("Tipo de figuras: %d\n", pnShapetype);
-    }
+    //}
 
     // comenzamos a medir la construcción del árbol.
     gettimeofday(&antes , NULL);
