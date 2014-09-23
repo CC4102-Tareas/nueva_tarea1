@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+int usar_linear_split;
+
 #include "estructuras.c"
 #include "dynamic_array.c"
 #include "operadores.c"

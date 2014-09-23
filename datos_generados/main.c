@@ -20,6 +20,11 @@ int usar_linear_split;
 #include "../rtree_op.c"
 #include "../tiempo.c"
 
+float float_aleatorio (float a){
+
+   return ((float)rand()/(float)(RAND_MAX)) * a;
+}
+
 Rectangulo rectangulo_aleatorio(){
 
     float var_aux, ancho_x, ancho_y, x2_, y2_;

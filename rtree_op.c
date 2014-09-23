@@ -227,9 +227,9 @@ void insertar(Nodo nodo, Rectangulo rect)
         Dos_nodos dn;
         
         if(usar_linear_split)
-    	    dn = linear_split(p, make_mbr_2(rect, -1));
+    	    dn = linear_split(n, make_mbr_2(rect, -1));
         else
-            dn = quadratic_split(p, make_mbr_2(rect, -1));
+            dn = quadratic_split(n, make_mbr_2(rect, -1));
 		ajustar_split(dn);
 	}
 }
