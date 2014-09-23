@@ -85,7 +85,8 @@ pnEntities = 10;
         
         if (DEBUG_EXP_GEO)
             for(j=0;j<resultado.used;j++) {
-                printf("   Encontrado ->[%f,%f]X[%f,%f]\n", resultado.array[j].x1, resultado.array[j].x2, resultado.array[j].y1, resultado.array[j].y2);
+                printf("   Encontrado ->[%f,%f]X[%f,%f]\n", resultado.array[j].x1, resultado.array[j].x2, 
+                                                            resultado.array[j].y1, resultado.array[j].y2);
             }
         
         freeArray(&resultado);
