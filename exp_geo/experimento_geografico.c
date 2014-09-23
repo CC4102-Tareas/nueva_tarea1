@@ -36,19 +36,26 @@ int main (int arc, char **argv) {
     usar_linear_split = atoi(argv[1]);    // 1 en el primer parámetro indica que debemos ocupar linear_split. 0 = quadratic_split.
     int num_repeticiones = atoi(argv[2]); // indica el número de repeticiones que se deben realizar.
 
+    printf("==================================================\n");
+    printf("Archivo de Rutas.\n");
+    printf("Cantidad de entidades: 10482\n");
+    printf("Archivo de bloques.\n");
+    printf("Cantidad de entidades: 710335\n");
+    printf("==================================================\n\n");
 // calcula la cantidad de repeticiones
 for(k=0;k<num_repeticiones;k++) {
  
     h = SHPOpen(RUTA_ARCHIVOS_RUTAS,"rb");
     SHPGetInfo(h, &pnEntities, &pnShapetype, padfMinBound, padfMaxBound);
     
-    //if (DEBUG_EXP_GEO) {
+    printf("==================================================\n");
+    if (DEBUG_EXP_GEO) {
         printf("Archivo de Rutas.\n");
         printf("MinX: %f | Min Y: %f\n",  padfMinBound[0], padfMinBound[1]);
         printf("MaxX: %f | Max Y: %f\n",  padfMaxBound[0], padfMaxBound[1]);
         printf("Cantidad de entidades: %d\n", pnEntities);
         printf("Tipo de figuras: %d\n", pnShapetype);
-    //}
+    }
 
     // se crea el árbol
     init_rtree();
@@ -82,13 +89,16 @@ for(k=0;k<num_repeticiones;k++) {
     h = SHPOpen(RUTA_ARCHIVOS_BLOQUES,"rb");
     SHPGetInfo(h, &pnEntities, &pnShapetype, padfMinBound, padfMaxBound);
 
-    //if (DEBUG_EXP_GEO) {
+    // se imprime la primera vez solamente.
+    if (k==0) {
+    }
+    if (DEBUG_EXP_GEO) {
         printf("Archivo de bloques.\n");
         printf("MinX: %f | Min Y: %f\n",  padfMinBound[0], padfMinBound[1]);
         printf("MaxX: %f | Max Y: %f\n",  padfMaxBound[0], padfMaxBound[1]);
         printf("Cantidad de entidades: %d\n", pnEntities);
         printf("Tipo de figuras: %d\n", pnShapetype);
-    //}
+    }
 
     // comenzamos a medir la construcción del árbol.
     gettimeofday(&antes , NULL);
@@ -118,8 +128,12 @@ for(k=0;k<num_repeticiones;k++) {
     // terminamos de medir la construcción del árbol.
     gettimeofday(&despues , NULL);
     dif = time_diff(antes , despues);
-    printf("Búsqueda de todos los rectángulos duró: %f segundos.\n", dif);
-
+    printf("Búsqueda de todos los rect. duró: %f segundos.\n", dif);
+    printf("lecturas a disco         : %d\n", lecturas_disco);
+    printf("actualizaciones a disco  : %d\n", actualizaciones_disco);
+    printf("inserciones a disco      : %d\n", inserciones_disco);
+    printf("Accesso a disco (resumen): %d\n", accesos_disco());        
+    printf("==================================================\n\n");
     // se cierra el archivo y se liberan recursos.
     SHPClose(h);
 }
