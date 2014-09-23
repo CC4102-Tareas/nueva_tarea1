@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-int usar_linear_split;
- 
+#include <time.h>
 #include "./shapelib-1.2.10/shapefil.h"
 #include "../estructuras.c"
 #include "../dynamic_array.c"
@@ -10,8 +8,9 @@ int usar_linear_split;
 #include "../split.c"
 #include "../r-tree.c"
 #include "../rtree_op.c"
+#include "../tiempo.c"
 
-#define DEBUG_EXP_GEO TRUE
+#define DEBUG_EXP_GEO FALSE
 
 #define RUTA_ARCHIVOS_RUTAS "./data/tl_2011_06_prisecroads"
 // OJO: es un path absoluto.
@@ -24,10 +23,19 @@ int main (int arc, char **argv) {
     double padfMinBound[4]; // límites inferiores de cada coordenada
     double padfMaxBound[4]; // límites superiores de cada coordenada
     SHPHandle h;
-    int i, j;               // iterador
+    int i, j, k;            // iterador
     SHPObject *obj;
     Rectangulo rect_aux;
+    Dynamic_array resultado;
     
+    double dif;
+    struct timeval antes , despues;
+    usar_linear_split = atoi(argv[1]);    // 1 en el primer parámetro indica que debemos ocupar linear_split. 0 = quadratic_split.
+    int num_repeticiones = atoi(argv[2]); // indica el número de repeticiones que se deben realizar.
+
+// calcula la cantidad de repeticiones
+for(k=0;k<num_repeticiones;k++) {
+ 
     h = SHPOpen(RUTA_ARCHIVOS_RUTAS,"rb");
     SHPGetInfo(h, &pnEntities, &pnShapetype, padfMinBound, padfMaxBound);
     
@@ -41,7 +49,10 @@ int main (int arc, char **argv) {
 
     // se crea el árbol
     init_rtree();
-pnEntities = 10;
+    
+    // comenzamos a medir la construcción del árbol.
+    gettimeofday(&antes , NULL);
+
     for(i=0;i<pnEntities;i++) {
         // desde el archivo queremos leer la figura i
         obj = SHPReadObject(h, i);
@@ -56,11 +67,13 @@ pnEntities = 10;
         // se libera la memoria.
         SHPDestroyObject(obj);
     }
+    // terminamos de medir la construcción del árbol.
+    gettimeofday(&despues , NULL);
+    dif = time_diff(antes , despues);
+    printf("Construcción de R-tree duró: %f segundos duermiendo.\n", dif);
 
     // se cierra el archivo y se liberan recursos.
     SHPClose(h);
-    
-    Dynamic_array resultado;
     
     // se abre el archivo de bloques para buscarlos.
     h = SHPOpen(RUTA_ARCHIVOS_BLOQUES,"rb");
@@ -73,6 +86,9 @@ pnEntities = 10;
         printf("Cantidad de entidades: %d\n", pnEntities);
         printf("Tipo de figuras: %d\n", pnShapetype);
     }
+
+    // comenzamos a medir la construcción del árbol.
+    gettimeofday(&antes , NULL);
 
     // ahora se va ha buscar cada elemento del archivo block
     for(i=0;i<pnEntities;i++) {
@@ -96,9 +112,14 @@ pnEntities = 10;
         // se libera la memoria.
         SHPDestroyObject(obj);
     }
-    
+    // terminamos de medir la construcción del árbol.
+    gettimeofday(&despues , NULL);
+    dif = time_diff(antes , despues);
+    printf("Búsqueda de todos los rectángulos duró: %f segundos.\n", dif);
+
     // se cierra el archivo y se liberan recursos.
     SHPClose(h);
+}
 
     return 0; // ok
 }
