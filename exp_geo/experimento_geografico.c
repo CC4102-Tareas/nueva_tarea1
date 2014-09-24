@@ -56,7 +56,7 @@ int main (int arc, char **argv) {
 // calcula la cantidad de repeticiones
 for(k=0;k<num_repeticiones;k++) {
  
-    if (ocupar_como_dice_enunciado==1) {
+    if (ocupar_como_dice_enunciado==1) 
         h = SHPOpen(RUTA_ARCHIVOS_RUTAS,"rb");
     else
         h= SHPOpen(RUTA_ARCHIVOS_BLOQUES,"rb");
@@ -109,7 +109,7 @@ for(k=0;k<num_repeticiones;k++) {
     SHPClose(h);
     
     // se abre el archivo de bloques para buscarlos.
-    if (ocupar_como_dice_enunciado==0) {
+    if (ocupar_como_dice_enunciado==0) 
         h = SHPOpen(RUTA_ARCHIVOS_RUTAS,"rb");
     else
         h= SHPOpen(RUTA_ARCHIVOS_BLOQUES,"rb");
