@@ -15,9 +15,9 @@ int usar_linear_split;
 
 #define DEBUG_EXP_GEO FALSE
 
-#define RUTA_ARCHIVOS_BLOQUES "./data/tl_2011_06_prisecroads"
+#define RUTA_ARCHIVOS_RUTAS "./data/tl_2011_06_prisecroads"
 // OJO: es un path absoluto.
-#define RUTA_ARCHIVOS_RUTAS "/home/cephei/Desktop/tl_2011_06_tabblock/tl_2011_06_tabblock"
+#define RUTA_ARCHIVOS_BLOQUES "/home/cephei/Desktop/tl_2011_06_tabblock/tl_2011_06_tabblock"
 
 void resetear_accesos() {
 
@@ -43,6 +43,7 @@ int main (int arc, char **argv) {
     struct timeval antes , despues;
     usar_linear_split = atoi(argv[1]);    // 1 en el primer parámetro indica que debemos ocupar linear_split. 0 = quadratic_split.
     int num_repeticiones = atoi(argv[2]); // indica el número de repeticiones que se deben realizar.
+    int ocupar_como_dice_enunciado = atoi(argv[3]);
 
     printf("==================================================\n");
     printf("Archivo de Rutas. ");
@@ -55,7 +56,11 @@ int main (int arc, char **argv) {
 // calcula la cantidad de repeticiones
 for(k=0;k<num_repeticiones;k++) {
  
-    h = SHPOpen(RUTA_ARCHIVOS_RUTAS,"rb");
+    if (ocupar_como_dice_enunciado==1) {
+        h = SHPOpen(RUTA_ARCHIVOS_RUTAS,"rb");
+    else
+        h= SHPOpen(RUTA_ARCHIVOS_BLOQUES,"rb");
+
     SHPGetInfo(h, &pnEntities, &pnShapetype, padfMinBound, padfMaxBound);
     
     printf("==================================================\n");
@@ -95,7 +100,7 @@ for(k=0;k<num_repeticiones;k++) {
     printf("Construc: %f\t%f\t%f\t%f\t%f\n", (float)dif/pnEntities, (float)lecturas_disco/pnEntities, (float)actualizaciones_disco/pnEntities, 
                                              (float)inserciones_disco/pnEntities, (float)accesos_disco()/pnEntities);
     
-    printf("Construc: %d\t%d\t%d\t%d\t%d\n", dif, lecturas_disco, actualizaciones_disco, inserciones_disco, accesos_disco());
+    printf("Construc: %f\t%d\t%d\t%d\t%d\n", dif, lecturas_disco, actualizaciones_disco, inserciones_disco, accesos_disco());
 
     // se resetean los contadores de disco
     resetear_accesos();
@@ -104,7 +109,11 @@ for(k=0;k<num_repeticiones;k++) {
     SHPClose(h);
     
     // se abre el archivo de bloques para buscarlos.
-    h = SHPOpen(RUTA_ARCHIVOS_BLOQUES,"rb");
+    if (ocupar_como_dice_enunciado==0) {
+        h = SHPOpen(RUTA_ARCHIVOS_RUTAS,"rb");
+    else
+        h= SHPOpen(RUTA_ARCHIVOS_BLOQUES,"rb");
+
     SHPGetInfo(h, &pnEntities, &pnShapetype, padfMinBound, padfMaxBound);
 
     if (DEBUG_EXP_GEO) {
@@ -147,7 +156,7 @@ for(k=0;k<num_repeticiones;k++) {
     printf("busqueda: %f\t%f\t%f\t%f\t%f\n", (float)dif/pnEntities, (float)lecturas_disco/pnEntities, (float)actualizaciones_disco/pnEntities, 
                                                              (float)inserciones_disco/pnEntities, (float)accesos_disco()/pnEntities);
 
-    printf("busqueda: %d\t%d\t%d\t%d\t%d\n", dif, lecturas_disco, actualizaciones_disco, inserciones_disco, accesos_disco());
+    printf("busqueda: %f\t%d\t%d\t%d\t%d\n", dif, lecturas_disco, actualizaciones_disco, inserciones_disco, accesos_disco());
 
     // se reseggtean los contadores de disco
     resetear_accesos();
