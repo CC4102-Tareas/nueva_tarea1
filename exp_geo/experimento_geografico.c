@@ -15,9 +15,17 @@ int usar_linear_split;
 
 #define DEBUG_EXP_GEO FALSE
 
-#define RUTA_ARCHIVOS_RUTAS "./data/tl_2011_06_prisecroads"
+#define RUTA_ARCHIVOS_BLOQUES "./data/tl_2011_06_prisecroads"
 // OJO: es un path absoluto.
-#define RUTA_ARCHIVOS_BLOQUES "/home/cephei/Desktop/tl_2011_06_tabblock/tl_2011_06_tabblock"
+#define RUTA_ARCHIVOS_RUTAS "/home/cephei/Desktop/tl_2011_06_tabblock/tl_2011_06_tabblock"
+
+void resetear_accesos() {
+
+    lecturas_disco=0;
+    actualizaciones_disco=0;
+    inserciones_disco=0;
+
+}
 
 int main (int arc, char **argv) {
     
@@ -37,11 +45,13 @@ int main (int arc, char **argv) {
     int num_repeticiones = atoi(argv[2]); // indica el número de repeticiones que se deben realizar.
 
     printf("==================================================\n");
-    printf("Archivo de Rutas.\n");
+    printf("Archivo de Rutas. ");
     printf("Cantidad de entidades: 10482\n");
-    printf("Archivo de bloques.\n");
+    printf("Archivo de bloques. ");
     printf("Cantidad de entidades: 710335\n");
     printf("==================================================\n\n");
+
+    printf("          tC      \tld      \tad      \tid      \tAccesoDisco\n");
 // calcula la cantidad de repeticiones
 for(k=0;k<num_repeticiones;k++) {
  
@@ -77,10 +87,18 @@ for(k=0;k<num_repeticiones;k++) {
         // se libera la memoria.
         SHPDestroyObject(obj);
     }
+
     // terminamos de medir la construcción del árbol.
     gettimeofday(&despues , NULL);
     dif = time_diff(antes , despues);
-    printf("Construcción de R-tree duró: %f segundos.\n", dif);
+
+    printf("Construc: %f\t%f\t%f\t%f\t%f\n", (float)dif/pnEntities, (float)lecturas_disco/pnEntities, (float)actualizaciones_disco/pnEntities, 
+                                             (float)inserciones_disco/pnEntities, (float)accesos_disco()/pnEntities);
+    
+    printf("Construc: %d\t%d\t%d\t%d\t%d\n", dif, lecturas_disco, actualizaciones_disco, inserciones_disco, accesos_disco());
+
+    // se resetean los contadores de disco
+    resetear_accesos();
 
     // se cierra el archivo y se liberan recursos.
     SHPClose(h);
@@ -89,9 +107,6 @@ for(k=0;k<num_repeticiones;k++) {
     h = SHPOpen(RUTA_ARCHIVOS_BLOQUES,"rb");
     SHPGetInfo(h, &pnEntities, &pnShapetype, padfMinBound, padfMaxBound);
 
-    // se imprime la primera vez solamente.
-    if (k==0) {
-    }
     if (DEBUG_EXP_GEO) {
         printf("Archivo de bloques.\n");
         printf("MinX: %f | Min Y: %f\n",  padfMinBound[0], padfMinBound[1]);
@@ -128,12 +143,15 @@ for(k=0;k<num_repeticiones;k++) {
     // terminamos de medir la construcción del árbol.
     gettimeofday(&despues , NULL);
     dif = time_diff(antes , despues);
-    printf("Búsqueda de todos los rect. duró: %f segundos.\n", dif);
-    printf("lecturas a disco         : %d\n", lecturas_disco);
-    printf("actualizaciones a disco  : %d\n", actualizaciones_disco);
-    printf("inserciones a disco      : %d\n", inserciones_disco);
-    printf("Accesso a disco (resumen): %d\n", accesos_disco());        
-    printf("==================================================\n\n");
+
+    printf("busqueda: %f\t%f\t%f\t%f\t%f\n", (float)dif/pnEntities, (float)lecturas_disco/pnEntities, (float)actualizaciones_disco/pnEntities, 
+                                                             (float)inserciones_disco/pnEntities, (float)accesos_disco()/pnEntities);
+
+    printf("busqueda: %d\t%d\t%d\t%d\t%d\n", dif, lecturas_disco, actualizaciones_disco, inserciones_disco, accesos_disco());
+
+    // se reseggtean los contadores de disco
+    resetear_accesos();
+
     // se cierra el archivo y se liberan recursos.
     SHPClose(h);
 }
